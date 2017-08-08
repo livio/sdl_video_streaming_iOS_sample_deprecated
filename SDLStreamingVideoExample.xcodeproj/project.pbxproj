@@ -1,0 +1,783 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		884A32381F34F28E00E6A40B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A32371F34F28E00E6A40B /* main.m */; };
+		884A323B1F34F28E00E6A40B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A323A1F34F28E00E6A40B /* AppDelegate.m */; };
+		884A32431F34F28E00E6A40B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 884A32421F34F28E00E6A40B /* Assets.xcassets */; };
+		884A32461F34F28E00E6A40B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 884A32441F34F28E00E6A40B /* LaunchScreen.storyboard */; };
+		884A32511F34F28E00E6A40B /* SDLStreamingVideoExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A32501F34F28E00E6A40B /* SDLStreamingVideoExampleTests.m */; };
+		884A325C1F34F28E00E6A40B /* SDLStreamingVideoExampleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A325B1F34F28E00E6A40B /* SDLStreamingVideoExampleUITests.m */; };
+		884A326C1F34F2E100E6A40B /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A326B1F34F2E100E6A40B /* HomeViewController.m */; };
+		884A32701F34F2F500E6A40B /* ProxyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A326F1F34F2F500E6A40B /* ProxyManager.m */; };
+		884A32741F34F37000E6A40B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 884A32731F34F37000E6A40B /* Main.storyboard */; };
+		88CA380F1F34FF1C00AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 88CA380D1F34FF0700AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 */; };
+		E3A68EEE96EBF4AE67D1A168 /* libPods-SDLStreamingVideoExampleUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B188F0952E63FF96D54A234C /* libPods-SDLStreamingVideoExampleUITests.a */; };
+		EEFD167691D80EECB69742C7 /* libPods-SDLStreamingVideoExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA278D54310C69F3A0EA6714 /* libPods-SDLStreamingVideoExampleTests.a */; };
+		FABB621861971E3A9519DB91 /* libPods-SDLStreamingVideoExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 53A380BC8A0D23F4289AED08 /* libPods-SDLStreamingVideoExample.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		884A324D1F34F28E00E6A40B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 884A322B1F34F28E00E6A40B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 884A32321F34F28E00E6A40B;
+			remoteInfo = SDLStreamingVideoExample;
+		};
+		884A32581F34F28E00E6A40B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 884A322B1F34F28E00E6A40B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 884A32321F34F28E00E6A40B;
+			remoteInfo = SDLStreamingVideoExample;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		112187B53AB05310C8DB51E8 /* Pods-SDLStreamingVideoExampleUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExampleUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExampleUITests/Pods-SDLStreamingVideoExampleUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		40E43C475E38E207709C5CE7 /* Pods-SDLStreamingVideoExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExampleTests/Pods-SDLStreamingVideoExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		4C1A3FCDBB0847FAAB565289 /* Pods-SDLStreamingVideoExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExample/Pods-SDLStreamingVideoExample.release.xcconfig"; sourceTree = "<group>"; };
+		53A380BC8A0D23F4289AED08 /* libPods-SDLStreamingVideoExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SDLStreamingVideoExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C99EE257BF3813CE71753EC /* Pods-SDLStreamingVideoExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExample/Pods-SDLStreamingVideoExample.debug.xcconfig"; sourceTree = "<group>"; };
+		884A32331F34F28E00E6A40B /* SDLStreamingVideoExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDLStreamingVideoExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		884A32371F34F28E00E6A40B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		884A32391F34F28E00E6A40B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		884A323A1F34F28E00E6A40B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		884A32421F34F28E00E6A40B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		884A32451F34F28E00E6A40B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		884A32471F34F28E00E6A40B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		884A324C1F34F28E00E6A40B /* SDLStreamingVideoExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SDLStreamingVideoExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		884A32501F34F28E00E6A40B /* SDLStreamingVideoExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDLStreamingVideoExampleTests.m; sourceTree = "<group>"; };
+		884A32521F34F28E00E6A40B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		884A32571F34F28E00E6A40B /* SDLStreamingVideoExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SDLStreamingVideoExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		884A325B1F34F28E00E6A40B /* SDLStreamingVideoExampleUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDLStreamingVideoExampleUITests.m; sourceTree = "<group>"; };
+		884A325D1F34F28E00E6A40B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		884A326A1F34F2E100E6A40B /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		884A326B1F34F2E100E6A40B /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		884A326E1F34F2F500E6A40B /* ProxyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProxyManager.h; sourceTree = "<group>"; };
+		884A326F1F34F2F500E6A40B /* ProxyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProxyManager.m; sourceTree = "<group>"; };
+		884A32731F34F37000E6A40B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		88CA380D1F34FF0700AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PreciousInterspeciesAnimalFriendship.mp4; sourceTree = "<group>"; };
+		A6326BD6247D2950C143F492 /* Pods-SDLStreamingVideoExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExampleTests/Pods-SDLStreamingVideoExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A66DB1F12FB758CB450CCFC2 /* Pods-SDLStreamingVideoExampleUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExampleUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExampleUITests/Pods-SDLStreamingVideoExampleUITests.release.xcconfig"; sourceTree = "<group>"; };
+		B188F0952E63FF96D54A234C /* libPods-SDLStreamingVideoExampleUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SDLStreamingVideoExampleUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA278D54310C69F3A0EA6714 /* libPods-SDLStreamingVideoExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SDLStreamingVideoExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		884A32301F34F28E00E6A40B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FABB621861971E3A9519DB91 /* libPods-SDLStreamingVideoExample.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		884A32491F34F28E00E6A40B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EEFD167691D80EECB69742C7 /* libPods-SDLStreamingVideoExampleTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		884A32541F34F28E00E6A40B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E3A68EEE96EBF4AE67D1A168 /* libPods-SDLStreamingVideoExampleUITests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A5A2FB47F4BBD71D8408181 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7C99EE257BF3813CE71753EC /* Pods-SDLStreamingVideoExample.debug.xcconfig */,
+				4C1A3FCDBB0847FAAB565289 /* Pods-SDLStreamingVideoExample.release.xcconfig */,
+				A6326BD6247D2950C143F492 /* Pods-SDLStreamingVideoExampleTests.debug.xcconfig */,
+				40E43C475E38E207709C5CE7 /* Pods-SDLStreamingVideoExampleTests.release.xcconfig */,
+				112187B53AB05310C8DB51E8 /* Pods-SDLStreamingVideoExampleUITests.debug.xcconfig */,
+				A66DB1F12FB758CB450CCFC2 /* Pods-SDLStreamingVideoExampleUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		6021094A34F06E42F9482101 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				53A380BC8A0D23F4289AED08 /* libPods-SDLStreamingVideoExample.a */,
+				FA278D54310C69F3A0EA6714 /* libPods-SDLStreamingVideoExampleTests.a */,
+				B188F0952E63FF96D54A234C /* libPods-SDLStreamingVideoExampleUITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		884A322A1F34F28E00E6A40B = {
+			isa = PBXGroup;
+			children = (
+				884A32351F34F28E00E6A40B /* SDLStreamingVideoExample */,
+				884A324F1F34F28E00E6A40B /* SDLStreamingVideoExampleTests */,
+				884A325A1F34F28E00E6A40B /* SDLStreamingVideoExampleUITests */,
+				884A32341F34F28E00E6A40B /* Products */,
+				1A5A2FB47F4BBD71D8408181 /* Pods */,
+				6021094A34F06E42F9482101 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		884A32341F34F28E00E6A40B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				884A32331F34F28E00E6A40B /* SDLStreamingVideoExample.app */,
+				884A324C1F34F28E00E6A40B /* SDLStreamingVideoExampleTests.xctest */,
+				884A32571F34F28E00E6A40B /* SDLStreamingVideoExampleUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		884A32351F34F28E00E6A40B /* SDLStreamingVideoExample */ = {
+			isa = PBXGroup;
+			children = (
+				884A32711F34F2F800E6A40B /* SDL */,
+				884A326D1F34F2E600E6A40B /* App */,
+				884A32361F34F28E00E6A40B /* Supporting Files */,
+			);
+			path = SDLStreamingVideoExample;
+			sourceTree = "<group>";
+		};
+		884A32361F34F28E00E6A40B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				884A32471F34F28E00E6A40B /* Info.plist */,
+				884A32421F34F28E00E6A40B /* Assets.xcassets */,
+				884A32441F34F28E00E6A40B /* LaunchScreen.storyboard */,
+				884A32391F34F28E00E6A40B /* AppDelegate.h */,
+				884A323A1F34F28E00E6A40B /* AppDelegate.m */,
+				884A32371F34F28E00E6A40B /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		884A324F1F34F28E00E6A40B /* SDLStreamingVideoExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				884A32501F34F28E00E6A40B /* SDLStreamingVideoExampleTests.m */,
+				884A32521F34F28E00E6A40B /* Info.plist */,
+			);
+			path = SDLStreamingVideoExampleTests;
+			sourceTree = "<group>";
+		};
+		884A325A1F34F28E00E6A40B /* SDLStreamingVideoExampleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				884A325B1F34F28E00E6A40B /* SDLStreamingVideoExampleUITests.m */,
+				884A325D1F34F28E00E6A40B /* Info.plist */,
+			);
+			path = SDLStreamingVideoExampleUITests;
+			sourceTree = "<group>";
+		};
+		884A326D1F34F2E600E6A40B /* App */ = {
+			isa = PBXGroup;
+			children = (
+				88CA380E1F34FF0D00AAE2B9 /* Video */,
+				884A32721F34F30E00E6A40B /* UI */,
+				884A326A1F34F2E100E6A40B /* HomeViewController.h */,
+				884A326B1F34F2E100E6A40B /* HomeViewController.m */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+		884A32711F34F2F800E6A40B /* SDL */ = {
+			isa = PBXGroup;
+			children = (
+				884A326E1F34F2F500E6A40B /* ProxyManager.h */,
+				884A326F1F34F2F500E6A40B /* ProxyManager.m */,
+			);
+			name = SDL;
+			sourceTree = "<group>";
+		};
+		884A32721F34F30E00E6A40B /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				884A32731F34F37000E6A40B /* Main.storyboard */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		88CA380E1F34FF0D00AAE2B9 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				88CA380D1F34FF0700AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 */,
+			);
+			name = Video;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		884A32321F34F28E00E6A40B /* SDLStreamingVideoExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 884A32601F34F28E00E6A40B /* Build configuration list for PBXNativeTarget "SDLStreamingVideoExample" */;
+			buildPhases = (
+				E1D7A25EBCC189D6C3860B52 /* [CP] Check Pods Manifest.lock */,
+				884A322F1F34F28E00E6A40B /* Sources */,
+				884A32301F34F28E00E6A40B /* Frameworks */,
+				884A32311F34F28E00E6A40B /* Resources */,
+				4E31F7F2A5F18B0D39589802 /* [CP] Embed Pods Frameworks */,
+				3A0B140033088D5E172EC6CD /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SDLStreamingVideoExample;
+			productName = SDLStreamingVideoExample;
+			productReference = 884A32331F34F28E00E6A40B /* SDLStreamingVideoExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		884A324B1F34F28E00E6A40B /* SDLStreamingVideoExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 884A32631F34F28E00E6A40B /* Build configuration list for PBXNativeTarget "SDLStreamingVideoExampleTests" */;
+			buildPhases = (
+				959AA8D829243F6A4B8C119D /* [CP] Check Pods Manifest.lock */,
+				884A32481F34F28E00E6A40B /* Sources */,
+				884A32491F34F28E00E6A40B /* Frameworks */,
+				884A324A1F34F28E00E6A40B /* Resources */,
+				10D3F6A314DB9F41EF45B188 /* [CP] Embed Pods Frameworks */,
+				CFF1C4944FBA3C6A67E5AFA3 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				884A324E1F34F28E00E6A40B /* PBXTargetDependency */,
+			);
+			name = SDLStreamingVideoExampleTests;
+			productName = SDLStreamingVideoExampleTests;
+			productReference = 884A324C1F34F28E00E6A40B /* SDLStreamingVideoExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		884A32561F34F28E00E6A40B /* SDLStreamingVideoExampleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 884A32661F34F28E00E6A40B /* Build configuration list for PBXNativeTarget "SDLStreamingVideoExampleUITests" */;
+			buildPhases = (
+				A49403BCDFF4E245A8A7002E /* [CP] Check Pods Manifest.lock */,
+				884A32531F34F28E00E6A40B /* Sources */,
+				884A32541F34F28E00E6A40B /* Frameworks */,
+				884A32551F34F28E00E6A40B /* Resources */,
+				1708584B16A5AC52C3C73781 /* [CP] Embed Pods Frameworks */,
+				E05D72E47199CB45590F76E1 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				884A32591F34F28E00E6A40B /* PBXTargetDependency */,
+			);
+			name = SDLStreamingVideoExampleUITests;
+			productName = SDLStreamingVideoExampleUITests;
+			productReference = 884A32571F34F28E00E6A40B /* SDLStreamingVideoExampleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		884A322B1F34F28E00E6A40B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = Livio;
+				TargetAttributes = {
+					884A32321F34F28E00E6A40B = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = NCVC2MHU7M;
+						ProvisioningStyle = Automatic;
+					};
+					884A324B1F34F28E00E6A40B = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = NCVC2MHU7M;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 884A32321F34F28E00E6A40B;
+					};
+					884A32561F34F28E00E6A40B = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = NCVC2MHU7M;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 884A32321F34F28E00E6A40B;
+					};
+				};
+			};
+			buildConfigurationList = 884A322E1F34F28E00E6A40B /* Build configuration list for PBXProject "SDLStreamingVideoExample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 884A322A1F34F28E00E6A40B;
+			productRefGroup = 884A32341F34F28E00E6A40B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				884A32321F34F28E00E6A40B /* SDLStreamingVideoExample */,
+				884A324B1F34F28E00E6A40B /* SDLStreamingVideoExampleTests */,
+				884A32561F34F28E00E6A40B /* SDLStreamingVideoExampleUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		884A32311F34F28E00E6A40B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88CA380F1F34FF1C00AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 in Resources */,
+				884A32741F34F37000E6A40B /* Main.storyboard in Resources */,
+				884A32461F34F28E00E6A40B /* LaunchScreen.storyboard in Resources */,
+				884A32431F34F28E00E6A40B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		884A324A1F34F28E00E6A40B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		884A32551F34F28E00E6A40B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		10D3F6A314DB9F41EF45B188 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SDLStreamingVideoExampleTests/Pods-SDLStreamingVideoExampleTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1708584B16A5AC52C3C73781 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SDLStreamingVideoExampleUITests/Pods-SDLStreamingVideoExampleUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3A0B140033088D5E172EC6CD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-SDLStreamingVideoExample/Pods-SDLStreamingVideoExample-resources.sh",
+				"$PODS_CONFIGURATION_BUILD_DIR/SmartDeviceLink/SmartDeviceLink.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SDLStreamingVideoExample/Pods-SDLStreamingVideoExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4E31F7F2A5F18B0D39589802 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SDLStreamingVideoExample/Pods-SDLStreamingVideoExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		959AA8D829243F6A4B8C119D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SDLStreamingVideoExampleTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A49403BCDFF4E245A8A7002E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SDLStreamingVideoExampleUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CFF1C4944FBA3C6A67E5AFA3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SDLStreamingVideoExampleTests/Pods-SDLStreamingVideoExampleTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E05D72E47199CB45590F76E1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SDLStreamingVideoExampleUITests/Pods-SDLStreamingVideoExampleUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E1D7A25EBCC189D6C3860B52 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SDLStreamingVideoExample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		884A322F1F34F28E00E6A40B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				884A323B1F34F28E00E6A40B /* AppDelegate.m in Sources */,
+				884A32381F34F28E00E6A40B /* main.m in Sources */,
+				884A32701F34F2F500E6A40B /* ProxyManager.m in Sources */,
+				884A326C1F34F2E100E6A40B /* HomeViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		884A32481F34F28E00E6A40B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				884A32511F34F28E00E6A40B /* SDLStreamingVideoExampleTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		884A32531F34F28E00E6A40B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				884A325C1F34F28E00E6A40B /* SDLStreamingVideoExampleUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		884A324E1F34F28E00E6A40B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 884A32321F34F28E00E6A40B /* SDLStreamingVideoExample */;
+			targetProxy = 884A324D1F34F28E00E6A40B /* PBXContainerItemProxy */;
+		};
+		884A32591F34F28E00E6A40B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 884A32321F34F28E00E6A40B /* SDLStreamingVideoExample */;
+			targetProxy = 884A32581F34F28E00E6A40B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		884A32441F34F28E00E6A40B /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				884A32451F34F28E00E6A40B /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		884A325E1F34F28E00E6A40B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		884A325F1F34F28E00E6A40B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		884A32611F34F28E00E6A40B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7C99EE257BF3813CE71753EC /* Pods-SDLStreamingVideoExample.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = NCVC2MHU7M;
+				INFOPLIST_FILE = SDLStreamingVideoExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.livio.SDLStreamingVideoExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		884A32621F34F28E00E6A40B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4C1A3FCDBB0847FAAB565289 /* Pods-SDLStreamingVideoExample.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = NCVC2MHU7M;
+				INFOPLIST_FILE = SDLStreamingVideoExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.livio.SDLStreamingVideoExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		884A32641F34F28E00E6A40B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6326BD6247D2950C143F492 /* Pods-SDLStreamingVideoExampleTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = NCVC2MHU7M;
+				INFOPLIST_FILE = SDLStreamingVideoExampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.livio.SDLStreamingVideoExampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SDLStreamingVideoExample.app/SDLStreamingVideoExample";
+			};
+			name = Debug;
+		};
+		884A32651F34F28E00E6A40B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40E43C475E38E207709C5CE7 /* Pods-SDLStreamingVideoExampleTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = NCVC2MHU7M;
+				INFOPLIST_FILE = SDLStreamingVideoExampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.livio.SDLStreamingVideoExampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SDLStreamingVideoExample.app/SDLStreamingVideoExample";
+			};
+			name = Release;
+		};
+		884A32671F34F28E00E6A40B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 112187B53AB05310C8DB51E8 /* Pods-SDLStreamingVideoExampleUITests.debug.xcconfig */;
+			buildSettings = {
+				DEVELOPMENT_TEAM = NCVC2MHU7M;
+				INFOPLIST_FILE = SDLStreamingVideoExampleUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.livio.SDLStreamingVideoExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SDLStreamingVideoExample;
+			};
+			name = Debug;
+		};
+		884A32681F34F28E00E6A40B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A66DB1F12FB758CB450CCFC2 /* Pods-SDLStreamingVideoExampleUITests.release.xcconfig */;
+			buildSettings = {
+				DEVELOPMENT_TEAM = NCVC2MHU7M;
+				INFOPLIST_FILE = SDLStreamingVideoExampleUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.livio.SDLStreamingVideoExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SDLStreamingVideoExample;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		884A322E1F34F28E00E6A40B /* Build configuration list for PBXProject "SDLStreamingVideoExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				884A325E1F34F28E00E6A40B /* Debug */,
+				884A325F1F34F28E00E6A40B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		884A32601F34F28E00E6A40B /* Build configuration list for PBXNativeTarget "SDLStreamingVideoExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				884A32611F34F28E00E6A40B /* Debug */,
+				884A32621F34F28E00E6A40B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		884A32631F34F28E00E6A40B /* Build configuration list for PBXNativeTarget "SDLStreamingVideoExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				884A32641F34F28E00E6A40B /* Debug */,
+				884A32651F34F28E00E6A40B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		884A32661F34F28E00E6A40B /* Build configuration list for PBXNativeTarget "SDLStreamingVideoExampleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				884A32671F34F28E00E6A40B /* Debug */,
+				884A32681F34F28E00E6A40B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 884A322B1F34F28E00E6A40B /* Project object */;
+}
