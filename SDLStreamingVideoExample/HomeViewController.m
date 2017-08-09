@@ -9,55 +9,45 @@
 #import "HomeViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
-
-@interface HomeViewController ()
-
-@property (nonatomic, retain) AVPlayer *videoPlayer;
-
-@end
+#import "VideoManager.h"
 
 @implementation HomeViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self playVideo];
+    [self setupPlayer];
 }
 
-- (void)playVideo {
-    NSURL *videoURL = [self videoURLForVideoName:@"PreciousInterspeciesAnimalFriendship" videoFormat:@"mp4"];
+- (void)setupPlayer {
+    AVPlayerViewController *playerViewController = [VideoManager.sharedManager setupVideoPlayerWithURL:[[self class] testVideoURL]];
+    playerViewController.view.frame = self.view.bounds;
+    [self addChildViewController:playerViewController];
+    [self.view addSubview:playerViewController.view];
 
-    if (videoURL == nil) {
-        NSLog(@"A video does not exist at the url");
-        return;
-    }
-
-    self.videoPlayer = [AVPlayer playerWithURL:videoURL];
-
-    AVPlayerViewController *videoViewController = [[AVPlayerViewController alloc] init];
-    videoViewController.view.frame = self.view.bounds;
-    videoViewController.player = self.videoPlayer;
-    videoViewController.showsPlaybackControls = true;
-
-    [self addChildViewController:videoViewController];
-    [self.view addSubview:videoViewController.view];
-
-    [self.videoPlayer pause];
-    [self.videoPlayer play];
+    [VideoManager.sharedManager startVideo];
 }
 
-- (NSURL *)videoURLForVideoName:(NSString *)videoName videoFormat:(NSString *)videoFormat {
+/**
+ The URL for a local video to be used for testing
+
+ @return The url for the test video
+ */
++ (NSURL *)testVideoURL {
+    NSString *videoName = @"PreciousInterspeciesAnimalFriendship";
+    NSString *videoFormat = @"mp4";
+    return [self filePathForVideoWithName:videoName videoFormat:videoFormat];
+}
+
+/**
+ A file path for a local video file
+
+ @param videoName The name of the video
+ @param videoFormat The format of the video
+ @return The url for the file path of the video
+ */
++ (NSURL *)filePathForVideoWithName:(NSString *)videoName videoFormat:(NSString *)videoFormat {
     NSString *videoFilePath = [[NSBundle bundleForClass:[self class]] pathForResource:videoName ofType:videoFormat];
     return [[NSURL alloc] initFileURLWithPath:videoFilePath];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -16,6 +16,7 @@
 		884A326C1F34F2E100E6A40B /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A326B1F34F2E100E6A40B /* HomeViewController.m */; };
 		884A32701F34F2F500E6A40B /* ProxyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A326F1F34F2F500E6A40B /* ProxyManager.m */; };
 		884A32741F34F37000E6A40B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 884A32731F34F37000E6A40B /* Main.storyboard */; };
+		885BCEE21F3B5CE800150136 /* VideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 885BCEE11F3B5CE800150136 /* VideoManager.m */; };
 		88CA380F1F34FF1C00AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 88CA380D1F34FF0700AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 */; };
 		E3A68EEE96EBF4AE67D1A168 /* libPods-SDLStreamingVideoExampleUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B188F0952E63FF96D54A234C /* libPods-SDLStreamingVideoExampleUITests.a */; };
 		EEFD167691D80EECB69742C7 /* libPods-SDLStreamingVideoExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA278D54310C69F3A0EA6714 /* libPods-SDLStreamingVideoExampleTests.a */; };
@@ -63,6 +64,8 @@
 		884A326E1F34F2F500E6A40B /* ProxyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProxyManager.h; sourceTree = "<group>"; };
 		884A326F1F34F2F500E6A40B /* ProxyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProxyManager.m; sourceTree = "<group>"; };
 		884A32731F34F37000E6A40B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		885BCEE01F3B5CE800150136 /* VideoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoManager.h; sourceTree = "<group>"; };
+		885BCEE11F3B5CE800150136 /* VideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoManager.m; sourceTree = "<group>"; };
 		88CA380D1F34FF0700AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PreciousInterspeciesAnimalFriendship.mp4; sourceTree = "<group>"; };
 		A6326BD6247D2950C143F492 /* Pods-SDLStreamingVideoExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExampleTests/Pods-SDLStreamingVideoExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A66DB1F12FB758CB450CCFC2 /* Pods-SDLStreamingVideoExampleUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExampleUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExampleUITests/Pods-SDLStreamingVideoExampleUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -146,6 +149,7 @@
 		884A32351F34F28E00E6A40B /* SDLStreamingVideoExample */ = {
 			isa = PBXGroup;
 			children = (
+				88CA380E1F34FF0D00AAE2B9 /* Video Assets */,
 				884A32711F34F2F800E6A40B /* SDL */,
 				884A326D1F34F2E600E6A40B /* App */,
 				884A32361F34F28E00E6A40B /* Supporting Files */,
@@ -156,11 +160,11 @@
 		884A32361F34F28E00E6A40B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				884A32391F34F28E00E6A40B /* AppDelegate.h */,
+				884A323A1F34F28E00E6A40B /* AppDelegate.m */,
 				884A32471F34F28E00E6A40B /* Info.plist */,
 				884A32421F34F28E00E6A40B /* Assets.xcassets */,
 				884A32441F34F28E00E6A40B /* LaunchScreen.storyboard */,
-				884A32391F34F28E00E6A40B /* AppDelegate.h */,
-				884A323A1F34F28E00E6A40B /* AppDelegate.m */,
 				884A32371F34F28E00E6A40B /* main.m */,
 			);
 			name = "Supporting Files";
@@ -187,10 +191,11 @@
 		884A326D1F34F2E600E6A40B /* App */ = {
 			isa = PBXGroup;
 			children = (
-				88CA380E1F34FF0D00AAE2B9 /* Video */,
 				884A32721F34F30E00E6A40B /* UI */,
 				884A326A1F34F2E100E6A40B /* HomeViewController.h */,
 				884A326B1F34F2E100E6A40B /* HomeViewController.m */,
+				885BCEE01F3B5CE800150136 /* VideoManager.h */,
+				885BCEE11F3B5CE800150136 /* VideoManager.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -212,12 +217,12 @@
 			name = UI;
 			sourceTree = "<group>";
 		};
-		88CA380E1F34FF0D00AAE2B9 /* Video */ = {
+		88CA380E1F34FF0D00AAE2B9 /* Video Assets */ = {
 			isa = PBXGroup;
 			children = (
 				88CA380D1F34FF0700AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 */,
 			);
-			name = Video;
+			name = "Video Assets";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -399,7 +404,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-SDLStreamingVideoExample/Pods-SDLStreamingVideoExample-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/SmartDeviceLink/SmartDeviceLink.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/SmartDeviceLink/SmartDeviceLink.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -520,6 +525,7 @@
 				884A32381F34F28E00E6A40B /* main.m in Sources */,
 				884A32701F34F2F500E6A40B /* ProxyManager.m in Sources */,
 				884A326C1F34F2E100E6A40B /* HomeViewController.m in Sources */,
+				885BCEE21F3B5CE800150136 /* VideoManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
