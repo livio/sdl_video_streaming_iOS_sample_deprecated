@@ -154,6 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.firstTimeState = SDLHMIFirstStateNone;
     self.initialShowState = SDLHMIInitialShowStateNone;
     self.videoPeriodicTimer = nil;
+    [VideoManager.sharedManager reset];
     [self sdlex_updateProxyState:ProxyStateStopped];
     if (ShouldRestartOnDisconnect) {
         [self startManager];
@@ -174,7 +175,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     if ([newLevel isEqualToEnum:SDLHMILevelFull] || [newLevel isEqualToEnum:SDLHMILevelLimited]) {
-        [self sdlex_startStreamingVideo];
+        [self sdlex_setupStreamingVideo];
     } else {
         [self sdlex_stopStreamingVideo];
     }
@@ -183,9 +184,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Streaming Video
 
 /**
- Registers for a callback from the video player on each new video frame. When the notification is received, an image is created from the current video frame and sent to the SDL Core.
+ *  Sets up the buffer to send the video to SDL Core.
  */
-- (void)sdlex_startStreamingVideo {
+- (void)sdlex_setupStreamingVideo {
     if (self.videoPeriodicTimer != nil) { return; }
 
     if (!self.sdlManager.streamManager.isVideoStreamingSupported) {
@@ -202,6 +203,23 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
+    if (VideoManager.sharedManager.player.rate == 1.0) {
+        // Video is already playing, setup the buffer to send video to SDL Core
+        [self sdlex_startStreamingVideo];
+    } else {
+        // Video is not yet playing. Register to get a notification when video starts playing
+        VideoManager.sharedManager.videoStreamingStartedHandler = ^{
+            [self sdlex_startStreamingVideo];
+        };
+    }
+}
+
+/**
+ *  Registers for a callback from the video player on each new video frame. When the notification is received, an image is created from the current video frame and sent to the SDL Core.
+ */
+- (void)sdlex_startStreamingVideo {
+    if (self.videoPeriodicTimer != nil) { return; }
+    
     __weak typeof(self) weakSelf = self;
     self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 48) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         // Grab an image of the current video frame and send it to SDL Core
@@ -212,7 +230,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 /**
- Stops registering for a callback from the video player on each new video frame.
+ *  Stops registering for a callback from the video player on each new video frame.
  */
 - (void)sdlex_stopStreamingVideo {
     if (self.videoPeriodicTimer == nil) { return; }
@@ -220,6 +238,11 @@ NS_ASSUME_NONNULL_BEGIN
     self.videoPeriodicTimer = nil;
 }
 
+/**
+ *  Send the video to SDL Core
+
+ @param imageBuffer  The image(s) to send to SDL Core
+ */
 - (void)sdlex_sendVideo:(CVPixelBufferRef)imageBuffer {
     if (imageBuffer == nil || [self.sdlManager.hmiLevel isEqualToEnum:SDLHMILevelNone] || [self.sdlManager.hmiLevel isEqualToEnum:SDLHMILevelBackground]) {
         // Video can only be sent when HMI level is full or limited

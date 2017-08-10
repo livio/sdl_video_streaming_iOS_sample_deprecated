@@ -15,12 +15,14 @@
 @property (nonatomic) AVPlayerItem *playerItem;
 @property (nonatomic) AVPlayerItemVideoOutput *playerOutput;
 @property (nonatomic) Boolean isReadyToPlay;
+@property (nonatomic) VideoStreamingState videoStreamingState;
 
 @end
 
 @implementation VideoManager
 
 static NSString *kStatusKey = @"status";
+static NSString *kRateKey = @"rate";
 
 #pragma mark - Initialization
 
@@ -40,13 +42,32 @@ static NSString *kStatusKey = @"status";
         return nil;
     }
 
+    _player = nil;
+    _playerItem = nil;
+    _playerOutput = nil;
+    _isReadyToPlay = false;
+    _videoStreamingState = VideoStreamingStateNone;
+
     return self;
+}
+
+/**
+ *  This method should be called when the proxy manager disconnects from the SDL Core. This is done because setup should be performed each time the proxy manager reconnects to the SDL Core during the same session.
+ */
+- (void)reset {
+    self.videoStreamingState = VideoStreamingStateNone;
+}
+
+- (void)dealloc {
+    [self.playerItem removeObserver:self forKeyPath:kStatusKey];
+    [self.player removeObserver:self forKeyPath:kStatusKey];
+    [self.player removeObserver:self forKeyPath:kRateKey];
 }
 
 #pragma mark - Video player setup
 
 /**
- Returns a video player initalized with the provided video url.
+ *  Returns a video player initalized with the provided video url.
 
  @param videoURL  The location of the video file
  @return  A video player view controller
@@ -61,7 +82,7 @@ static NSString *kStatusKey = @"status";
 }
 
 /**
- Returns an AVPlayerItemVideoOutput object that coordinates the output of content associated with a Core Video pixel buffer. Images can be grabbed from the video frames and added to a CVPixelBufferRef.
+ *  Returns an AVPlayerItemVideoOutput object that coordinates the output of content associated with a Core Video pixel buffer. Images can be grabbed from the video frames and added to a CVPixelBufferRef.
 
  @return  A coordinator for the output of content associated with a Core Video pixel buffer
  */
@@ -74,7 +95,7 @@ static NSString *kStatusKey = @"status";
 }
 
 /**
- Returns an AVPlayer object that is responsible for managing the playback and timing of the video
+ *  Returns an AVPlayer object that is responsible for managing the playback and timing of the video
 
  @param videoURL  The url of the video's location
  @return  A manager for the playback and timing of the video
@@ -86,11 +107,14 @@ static NSString *kStatusKey = @"status";
     // Get notification when player is ready
     [player addObserver:self forKeyPath:kStatusKey options:NSKeyValueObservingOptionInitial context:&kStatusKey];
 
+    // Get notification when player play/pauses
+    [player addObserver:self forKeyPath:kRateKey options:NSKeyValueObservingOptionInitial context:&kRateKey];
+
     return player;
 }
 
 /**
- Returns an AVPlayerItem object that provides the interface to seek to various times in the media, determine its presentation size, and many other things.
+ *  Returns an AVPlayerItem object that provides the interface to seek to various times in the media, determines its presentation size, and many other things.
 
  @param player  A manager for the playback and timing of the video
  @param output  A coordinator for the output of content associated with a Core Video pixel buffer
@@ -107,7 +131,7 @@ static NSString *kStatusKey = @"status";
 }
 
 /**
- Returns a view controller for displaying the video with built in play/pause/skip controls
+ *  Returns a view controller for displaying the video with built in play/pause/skip controls
 
  @param player  Manages the playback and timing of the video
  @return  A view controller displaying the video content of the player along with system-supplied playback controls
@@ -122,16 +146,18 @@ static NSString *kStatusKey = @"status";
 #pragma mark - Play video
 
 /**
- Starts playing the video
+ * Starts playing the video
  */
 - (void)startVideo {
     [self.player play];
+    if (self.videoStreamingStartedHandler == nil) { return; }
+    self.videoStreamingStartedHandler();
 }
 
 #pragma mark - Video frame buffer
 
 /**
- Creates an image from the current video frame and passes it to a CVPixelBufferRef
+ *  Creates an image from the current video frame and passes it to a CVPixelBufferRef
  */
 - (CVPixelBufferRef)getPixelBuffer {
     CVPixelBufferRef buffer = NULL;
@@ -150,28 +176,38 @@ static NSString *kStatusKey = @"status";
 }
 
 /**
- Releases data held in a CVPixelBufferRef. If the data is not released, the app will run out of memory and crash.
+ *  Releases data held in a CVPixelBufferRef. If the data is not released, the app will run out of memory and crash.
 
  @param buffer  A CVPixelBufferRef
  */
 - (void)releasePixelBuffer:(CVPixelBufferRef)buffer {
-    // Memory cleanup
     CVPixelBufferUnlockBaseAddress(buffer, kCVPixelBufferLock_ReadOnly);
     CVPixelBufferRelease(buffer);
 }
 
 #pragma mark - Video player start KVO
 
+/**
+ *  Observe the AVPlayer for when it is first setup and ready to be used and also for the first time the player is played.
+ */
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if (context == &kStatusKey) {
         __weak typeof(self) weakSelf = self;
-        AVPlayer *player = self.player;
-        AVPlayerItem *playerItem = self.playerItem;
-
-        if (player.status == AVPlayerStatusReadyToPlay && playerItem.status == AVPlayerItemStatusReadyToPlay) {
+        if (weakSelf.player.status == AVPlayerStatusReadyToPlay && weakSelf.playerItem.status == AVPlayerItemStatusReadyToPlay) {
             weakSelf.isReadyToPlay = true;
         } else {
             weakSelf.isReadyToPlay = false;
+        }
+    } else if (context == &kRateKey) {
+        __weak typeof(self) weakSelf = self;
+        // A value of 0.0 means the video is paused, while a value of 1.0 means the video is playing at its natural rate
+        if (weakSelf.player.rate == 1.0 && weakSelf.videoStreamingState == VideoStreamingStateNone) {
+            weakSelf.videoStreamingState = VideoStreamingStateStreaming;
+            [weakSelf startVideo];
+        } else if (weakSelf.player.rate == 1.0 && weakSelf.videoStreamingState != VideoStreamingStateNone) {
+            weakSelf.videoStreamingState = VideoStreamingStateStreaming;
+        } else if (weakSelf.player.rate == 0.0 && weakSelf.videoStreamingState != VideoStreamingStateNone) {
+            weakSelf.videoStreamingState = VideoStreamingStateNotStreaming;
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
