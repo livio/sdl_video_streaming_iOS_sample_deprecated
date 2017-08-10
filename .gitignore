@@ -19,3 +19,6 @@ xcuserdata/
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+
+# Cocoapods
+Pods/

@@ -1,1 +1,0 @@
-../../../../../../../../../sdl_ios/SmartDeviceLink/SDLDisplayCapabilities.h

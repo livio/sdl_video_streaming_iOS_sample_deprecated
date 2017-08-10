@@ -1,1 +1,0 @@
-../../../../../../../../../sdl_ios/SmartDeviceLink/SDLSetAppIcon.h
