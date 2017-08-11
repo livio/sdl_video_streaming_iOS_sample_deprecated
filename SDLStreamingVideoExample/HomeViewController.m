@@ -33,8 +33,8 @@
  @return The url for the test video
  */
 + (NSURL *)testVideoURL {
-    NSString *videoName = @"PreciousInterspeciesAnimalFriendship";
-    NSString *videoFormat = @"mp4";
+    NSString *videoName = @"DrivingAtNight";
+    NSString *videoFormat = @"m4v";
     return [self filePathForVideoWithName:videoName videoFormat:videoFormat];
 }
 

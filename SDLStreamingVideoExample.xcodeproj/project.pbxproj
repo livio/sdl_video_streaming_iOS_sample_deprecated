@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00B3DAD85D34E96A02B6B926 /* libPods-SDLStreamingVideoExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6E840B3312C5E5B05EE9E3 /* libPods-SDLStreamingVideoExampleTests.a */; };
+		88137A8D1F3E018D00342220 /* DrivingAtNight.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 88137A8C1F3E011700342220 /* DrivingAtNight.m4v */; };
 		884A32381F34F28E00E6A40B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A32371F34F28E00E6A40B /* main.m */; };
 		884A323B1F34F28E00E6A40B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A323A1F34F28E00E6A40B /* AppDelegate.m */; };
 		884A32431F34F28E00E6A40B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 884A32421F34F28E00E6A40B /* Assets.xcassets */; };
@@ -18,7 +19,6 @@
 		884A32701F34F2F500E6A40B /* ProxyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A326F1F34F2F500E6A40B /* ProxyManager.m */; };
 		884A32741F34F37000E6A40B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 884A32731F34F37000E6A40B /* Main.storyboard */; };
 		885BCEE21F3B5CE800150136 /* VideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 885BCEE11F3B5CE800150136 /* VideoManager.m */; };
-		88CA380F1F34FF1C00AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 88CA380D1F34FF0700AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 */; };
 		9FCB02779C5E375DCC8613CF /* libPods-SDLStreamingVideoExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D257104DE9B0E3407E10E4C /* libPods-SDLStreamingVideoExample.a */; };
 		F163FDC717F54237019025DB /* libPods-SDLStreamingVideoExampleUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E017ADAA6F0F3A00E19F8BE /* libPods-SDLStreamingVideoExampleUITests.a */; };
 /* End PBXBuildFile section */
@@ -45,6 +45,7 @@
 		2E017ADAA6F0F3A00E19F8BE /* libPods-SDLStreamingVideoExampleUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SDLStreamingVideoExampleUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E3B85EC80A6576752DA8EF0 /* Pods-SDLStreamingVideoExampleUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExampleUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExampleUITests/Pods-SDLStreamingVideoExampleUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		7954EDEC607B7192351E2EBF /* Pods-SDLStreamingVideoExampleUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExampleUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExampleUITests/Pods-SDLStreamingVideoExampleUITests.release.xcconfig"; sourceTree = "<group>"; };
+		88137A8C1F3E011700342220 /* DrivingAtNight.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = DrivingAtNight.m4v; sourceTree = "<group>"; };
 		884A32331F34F28E00E6A40B /* SDLStreamingVideoExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDLStreamingVideoExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		884A32371F34F28E00E6A40B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		884A32391F34F28E00E6A40B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -65,7 +66,6 @@
 		884A32731F34F37000E6A40B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		885BCEE01F3B5CE800150136 /* VideoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoManager.h; sourceTree = "<group>"; };
 		885BCEE11F3B5CE800150136 /* VideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoManager.m; sourceTree = "<group>"; };
-		88CA380D1F34FF0700AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PreciousInterspeciesAnimalFriendship.mp4; sourceTree = "<group>"; };
 		8D257104DE9B0E3407E10E4C /* libPods-SDLStreamingVideoExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SDLStreamingVideoExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C6E840B3312C5E5B05EE9E3 /* libPods-SDLStreamingVideoExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SDLStreamingVideoExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5DCF363EBFCFE36C34EC03E /* Pods-SDLStreamingVideoExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExampleTests/Pods-SDLStreamingVideoExampleTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -207,7 +207,7 @@
 		88CA380E1F34FF0D00AAE2B9 /* Video Assets */ = {
 			isa = PBXGroup;
 			children = (
-				88CA380D1F34FF0700AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 */,
+				88137A8C1F3E011700342220 /* DrivingAtNight.m4v */,
 			);
 			name = "Video Assets";
 			sourceTree = "<group>";
@@ -348,7 +348,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88CA380F1F34FF1C00AAE2B9 /* PreciousInterspeciesAnimalFriendship.mp4 in Resources */,
+				88137A8D1F3E018D00342220 /* DrivingAtNight.m4v in Resources */,
 				884A32741F34F37000E6A40B /* Main.storyboard in Resources */,
 				884A32461F34F28E00E6A40B /* LaunchScreen.storyboard in Resources */,
 				884A32431F34F28E00E6A40B /* Assets.xcassets in Resources */,
