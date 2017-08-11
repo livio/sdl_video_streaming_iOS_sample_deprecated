@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLifecycleConfiguration *lifecycleConfig = [self.class sdlex_setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration defaultConfigurationWithAppName:SDLAppName appId:SDLAppId]];
 
     // Navigation apps must have a SDLStreamingMediaConfiguration
-    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[SDLLogConfiguration defaultConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
+    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
 
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
 
@@ -95,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLifecycleConfiguration *lifecycleConfig = [self.class sdlex_setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration debugConfigurationWithAppName:SDLAppName appId:SDLAppId ipAddress:SDLIPAddress port:SDLPort]];
 
     // Navigation apps must have a SDLStreamingMediaConfiguration
-    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[SDLLogConfiguration defaultConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
+    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
 
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
 
@@ -132,6 +132,15 @@ NS_ASSUME_NONNULL_BEGIN
     config.appType = SDLAppHMITypeNavigation;
 
     return config;
+}
+
++ (SDLLogConfiguration *)sdlex_logConfiguration {
+    SDLLogConfiguration *logConfig = [SDLLogConfiguration debugConfiguration];
+    SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDLVideo" files:[NSSet setWithArray:@[@"ProxyManager"]]];
+    logConfig.modules = [logConfig.modules setByAddingObject:sdlExampleModule];
+    logConfig.targets = [logConfig.targets setByAddingObject:[SDLLogTargetFile logger]];
+
+    return logConfig;
 }
 
 /**
@@ -191,27 +200,30 @@ NS_ASSUME_NONNULL_BEGIN
 
     if (!self.sdlManager.streamManager.isVideoStreamingSupported) {
         // Check if Core can support video
-        NSLog(@"SDL Core does not support video");
         self.videoPeriodicTimer = nil;
         return;
     }
 
-    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
-        // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
-        NSLog(@"Video streaming can not occur in background");
-        self.videoPeriodicTimer = nil;
-        return;
-    }
-
-    if (VideoManager.sharedManager.player.rate == 1.0) {
+    if (VideoManager.sharedManager.player == nil) {
+        // Video player is not yet setup
+        [self registerForNotificationWhenVideoStartsPlaying];
+    } else if (VideoManager.sharedManager.player.rate == 1.0) {
         // Video is already playing, setup the buffer to send video to SDL Core
         [self sdlex_startStreamingVideo];
     } else {
-        // Video is not yet playing. Register to get a notification when video starts playing
-        VideoManager.sharedManager.videoStreamingStartedHandler = ^{
-            [self sdlex_startStreamingVideo];
-        };
+        // Video player is setup but nothing is playing yet
+        [self registerForNotificationWhenVideoStartsPlaying];
     }
+}
+
+/**
+ *  Registers for a callback when the video player starts playing
+ */
+- (void)registerForNotificationWhenVideoStartsPlaying {
+    // Video is not yet playing. Register to get a notification when video starts playing
+    VideoManager.sharedManager.videoStreamingStartedHandler = ^{
+        [self sdlex_startStreamingVideo];
+    };
 }
 
 /**
@@ -222,6 +234,12 @@ NS_ASSUME_NONNULL_BEGIN
     
     __weak typeof(self) weakSelf = self;
     self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 48) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+        if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
+            // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
+            SDLLogD(@"Video streaming can not occur in background");
+            self.videoPeriodicTimer = nil;
+            return;
+        }
         // Grab an image of the current video frame and send it to SDL Core
         CVPixelBufferRef buffer = [VideoManager.sharedManager getPixelBuffer];
         [weakSelf sdlex_sendVideo:buffer];
