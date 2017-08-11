@@ -12,4 +12,5 @@
 # Notes
 - This app is for testing porposes only.
 - Touch events are not used in this app.
-- This app streams a local video file. Setup will be different if streaming directly from the iOS device's camera (This is not handled in the example). 
+- This app streams a local video file. Setup will be different if streaming directly from the iOS device's camera (This is not handled in the example).
+- Video use in project is sourced from [https://videos.pexels.com](https://videos.pexels.com). The video is licensed under the [Creative Commons Zero (CC0) license](https://videos.pexels.com/video-license).
