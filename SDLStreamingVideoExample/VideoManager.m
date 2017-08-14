@@ -48,6 +48,8 @@ static NSString *kRateKey = @"rate";
     _isReadyToPlay = false;
     _videoStreamingState = VideoStreamingStateNone;
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+
     return self;
 }
 
@@ -62,6 +64,10 @@ static NSString *kRateKey = @"rate";
     [self.playerItem removeObserver:self forKeyPath:kStatusKey];
     [self.player removeObserver:self forKeyPath:kStatusKey];
     [self.player removeObserver:self forKeyPath:kRateKey];
+}
+
+- (void)sdl_applicationDidBecomeActive:(NSNotification *)notification {
+    [self reset];
 }
 
 #pragma mark - Video player setup

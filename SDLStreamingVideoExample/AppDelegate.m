@@ -17,8 +17,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-    [[ProxyManager sharedManager] startIAP];
-//     [[ProxyManager sharedManager] startTCP];
+//    [[ProxyManager sharedManager] startIAP];
+     [[ProxyManager sharedManager] startTCP];
 
     return YES;
 }

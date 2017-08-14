@@ -11,8 +11,8 @@
 #import "VideoManager.h"
 
 NSString *const SDLAppName = @"SDLVideo";
-NSString *const SDLAppId = @"9696";
-NSString *const SDLIPAddress = @"192.168.1.249";
+NSString *const SDLAppId = @"2776";
+NSString *const SDLIPAddress = @"192.168.1.61";
 UInt16 const SDLPort = (UInt16)2776;
 
 BOOL const ShouldRestartOnDisconnect = NO;
@@ -111,6 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
             return;
         }
 
+        SDLLogD(@"SDL Connected");
         [weakSelf sdlex_updateProxyState:ProxyStateConnected];
     }];
 }
@@ -233,10 +234,10 @@ NS_ASSUME_NONNULL_BEGIN
     if (self.videoPeriodicTimer != nil) { return; }
     
     __weak typeof(self) weakSelf = self;
-    self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 48) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+    self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
             // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
-            SDLLogD(@"Video streaming can not occur in background");
+            SDLLogW(@"Video streaming can not occur in background");
             self.videoPeriodicTimer = nil;
             return;
         }
