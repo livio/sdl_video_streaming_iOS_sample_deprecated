@@ -11,7 +11,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SmartDeviceLink:
-    :commit: a7dbe742424bba93e914a609fbee3c25c5d21a43
+    :commit: 20eead8205537770c5b751e51c5f42120c139fe7
     :git: https://github.com/smartdevicelink/sdl_ios
 
 SPEC CHECKSUMS:
