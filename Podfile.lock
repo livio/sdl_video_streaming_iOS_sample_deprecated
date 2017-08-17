@@ -1,5 +1,10 @@
 PODS:
-  - SmartDeviceLink (4.6.1)
+  - BiSON (1.0.1)
+  - SmartDeviceLink (4.6.1):
+    - BiSON (~> 1.0)
+    - SmartDeviceLink/Default (= 4.6.1)
+  - SmartDeviceLink/Default (4.6.1):
+    - BiSON (~> 1.0)
 
 DEPENDENCIES:
   - SmartDeviceLink (from `https://github.com/smartdevicelink/sdl_ios`, branch `feature/streaming_media_manager`)
@@ -11,11 +16,12 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SmartDeviceLink:
-    :commit: 20eead8205537770c5b751e51c5f42120c139fe7
+    :commit: 65c1966c888b6cd48fcb9934a097332e71112511
     :git: https://github.com/smartdevicelink/sdl_ios
 
 SPEC CHECKSUMS:
-  SmartDeviceLink: 48f0bee672a77e20f11679bcd957089fc174d69f
+  BiSON: 4a12ea7d55a080bb374b307692f5a4dca440b2fc
+  SmartDeviceLink: f492963797ccb7bf3c90a4cc943122c04d9c7c43
 
 PODFILE CHECKSUM: 6b637a6cf14dd031e7e216824b97f6d5b6f821e1
 
