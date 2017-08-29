@@ -1,25 +1,25 @@
 PODS:
   - BiSON (1.0.1)
-  - SmartDeviceLink (4.6.1):
+  - SmartDeviceLink (4.7.0-rc.1):
     - BiSON (~> 1.0)
 
 DEPENDENCIES:
-  - SmartDeviceLink (from `https://github.com/smartdevicelink/sdl_ios`, branch `bugfix/ack_parse_data_error`)
+  - SmartDeviceLink (from `https://github.com/smartdevicelink/sdl_ios`, branch `develop`)
 
 EXTERNAL SOURCES:
   SmartDeviceLink:
-    :branch: bugfix/ack_parse_data_error
+    :branch: develop
     :git: https://github.com/smartdevicelink/sdl_ios
 
 CHECKOUT OPTIONS:
   SmartDeviceLink:
-    :commit: dfac498da4bfd3d23df1aabe45e10692179ab991
+    :commit: 50c96a76f061ab715af473b4552fe3ec56906d09
     :git: https://github.com/smartdevicelink/sdl_ios
 
 SPEC CHECKSUMS:
   BiSON: 4a12ea7d55a080bb374b307692f5a4dca440b2fc
-  SmartDeviceLink: c7c2698630a23cd335b1f8fb555ccbc7deba6ad9
+  SmartDeviceLink: 7d4617d3becc215a6ebe8f60a6881b673a6df92e
 
-PODFILE CHECKSUM: 929d7e2481028f4da6f6086ead31d78efdaf4f65
+PODFILE CHECKSUM: 4f3e89ba0d0cb0c0265d1e20c32301a0864ecb58
 
 COCOAPODS: 1.2.1

@@ -6,7 +6,7 @@ target 'SDLStreamingVideoExample' do
   # use_frameworks!
 
   # Pods for SDLStreamingVideoExample
-  pod 'SmartDeviceLink', :git => 'https://github.com/smartdevicelink/sdl_ios', :branch => 'bugfix/ack_parse_data_error'
+  pod 'SmartDeviceLink', :git => 'https://github.com/smartdevicelink/sdl_ios', :branch => 'develop'
 
   target 'SDLStreamingVideoExampleTests' do
     inherit! :search_paths
