@@ -12,7 +12,7 @@
 
 NSString *const SDLAppName = @"SDLVideo";
 NSString *const SDLAppId = @"2776";
-NSString *const SDLIPAddress = @"192.168.1.61";
+NSString *const SDLIPAddress = @"192.168.1.236";
 UInt16 const SDLPort = (UInt16)2776;
 
 BOOL const ShouldRestartOnDisconnect = NO;
@@ -72,15 +72,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)startIAP {
     [self sdlex_updateProxyState:ProxyStateSearchingForConnection];
 
-    // Return if there is already an instance of sdlManager
     if (self.sdlManager) { return; }
-
-    // To stream video, the app type must be "Navigation". Video will not work with other app types.
     SDLLifecycleConfiguration *lifecycleConfig = [self.class sdlex_setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration defaultConfigurationWithAppName:SDLAppName appId:SDLAppId]];
 
-    // Navigation apps must have a SDLStreamingMediaConfiguration
-    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
+    // Assume this is production and disable logging
+    lifecycleConfig.logFlags = SDLLogOutputNone;
 
+    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration]];
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
 
     [self startManager];
@@ -88,15 +86,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)startTCP {
     [self sdlex_updateProxyState:ProxyStateSearchingForConnection];
-    // Return if there is already an instance of sdlManager
+
+    // Check for previous instance of sdlManager
     if (self.sdlManager) { return; }
-
-    // To stream video, the app type must be "Navigation". Video will not work with other app types.
     SDLLifecycleConfiguration *lifecycleConfig = [self.class sdlex_setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration debugConfigurationWithAppName:SDLAppName appId:SDLAppId ipAddress:SDLIPAddress port:SDLPort]];
-
-    // Navigation apps must have a SDLStreamingMediaConfiguration
-    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
-
+    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration]];
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
 
     [self startManager];
@@ -106,12 +100,12 @@ NS_ASSUME_NONNULL_BEGIN
     __weak typeof (self) weakSelf = self;
     [self.sdlManager startWithReadyHandler:^(BOOL success, NSError * _Nullable error) {
         if (!success) {
-            SDLLogE(@"SDL errored starting up: %@", error);
+            NSLog(@"SDL errored starting up: %@", error);
             [weakSelf sdlex_updateProxyState:ProxyStateStopped];
             return;
         }
 
-        SDLLogD(@"SDL Connected");
+        NSLog(@"SDL Connected");
         [weakSelf sdlex_updateProxyState:ProxyStateConnected];
     }];
 }
@@ -130,18 +124,9 @@ NS_ASSUME_NONNULL_BEGIN
     config.shortAppName = @"Video";
     config.voiceRecognitionCommandNames = @[@"S D L Video"];
     config.ttsName = [SDLTTSChunk textChunksFromString:config.shortAppName];
-    config.appType = SDLAppHMITypeNavigation;
+    config.appType = [SDLAppHMIType NAVIGATION];
 
     return config;
-}
-
-+ (SDLLogConfiguration *)sdlex_logConfiguration {
-    SDLLogConfiguration *logConfig = [SDLLogConfiguration debugConfiguration];
-    SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDLVideo" files:[NSSet setWithArray:@[@"ProxyManager"]]];
-    logConfig.modules = [logConfig.modules setByAddingObject:sdlExampleModule];
-    logConfig.targets = [logConfig.targets setByAddingObject:[SDLLogTargetFile logger]];
-
-    return logConfig;
 }
 
 /**
@@ -171,22 +156,23 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (void)hmiLevel:(SDLHMILevel)oldLevel didChangeToLevel:(SDLHMILevel)newLevel {
-    if (![newLevel isEqualToEnum:SDLHMILevelNone] && (self.firstTimeState == SDLHMIFirstStateNone)) {
+- (void)hmiLevel:(SDLHMILevel *)oldLevel didChangeToLevel:(SDLHMILevel *)newLevel {
+    if (![newLevel isEqualToEnum:[SDLHMILevel NONE]] && (self.firstTimeState == SDLHMIFirstStateNone)) {
         // This is our first time in a non-NONE state
         self.firstTimeState = SDLHMIFirstStateNonNone;
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdlex_stopStreamingVideo) name:UIApplicationWillResignActiveNotification object:nil];
     }
 
-    if ([newLevel isEqualToEnum:SDLHMILevelFull] && (self.firstTimeState != SDLHMIFirstStateFull)) {
+    if ([newLevel isEqualToEnum:[SDLHMILevel FULL]] && (self.firstTimeState != SDLHMIFirstStateFull)) {
         // This is our first time in a FULL state
         self.firstTimeState = SDLHMIFirstStateFull;
     }
 
-    if ([newLevel isEqualToEnum:SDLHMILevelFull] || [newLevel isEqualToEnum:SDLHMILevelLimited]) {
+    if ([newLevel isEqualToEnum:[SDLHMILevel FULL]] || [newLevel isEqualToEnum:[SDLHMILevel LIMITED]]) {
+        // We're always going to try to show the initial state, because if we've already shown it, it won't be shown, and we need to guard against some possible weird states
         [self sdlex_setupStreamingVideo];
-    } else {
+    }else{
         [self sdlex_stopStreamingVideo];
     }
 }
@@ -198,12 +184,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)sdlex_setupStreamingVideo {
     if (self.videoPeriodicTimer != nil) { return; }
-
-    if (!self.sdlManager.streamManager.isVideoStreamingSupported) {
-        // Check if Core can support video
-        self.videoPeriodicTimer = nil;
-        return;
-    }
 
     if (VideoManager.sharedManager.player == nil) {
         // Video player is not yet setup
@@ -232,12 +212,20 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)sdlex_startStreamingVideo {
     if (self.videoPeriodicTimer != nil) { return; }
-    
+
+    [self.sdlManager.streamManager startVideoSessionWithStartBlock:^(BOOL success, NSError * _Nullable error) {
+        if (!success) {
+            if (error) {
+                NSLog(@"Error starting video session. %@", error.localizedDescription);
+            }
+        }
+    }];
+
     __weak typeof(self) weakSelf = self;
     self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
             // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
-            SDLLogW(@"Video streaming can not occur in background");
+            NSLog(@"Video streaming can not occur in background");
             self.videoPeriodicTimer = nil;
             return;
         }
@@ -263,7 +251,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param imageBuffer  The image(s) to send to SDL Core
  */
 - (void)sdlex_sendVideo:(CVPixelBufferRef)imageBuffer {
-    if (imageBuffer == nil || [self.sdlManager.hmiLevel isEqualToEnum:SDLHMILevelNone] || [self.sdlManager.hmiLevel isEqualToEnum:SDLHMILevelBackground]) {
+    if (imageBuffer == nil || [self.sdlManager.hmiLevel isEqualToEnum:[SDLHMILevel NONE]] || [self.sdlManager.hmiLevel isEqualToEnum:[SDLHMILevel BACKGROUND]]) {
         // Video can only be sent when HMI level is full or limited
         return;
     }
