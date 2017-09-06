@@ -24,7 +24,7 @@
     [self addChildViewController:playerViewController];
     [self.view addSubview:playerViewController.view];
 
-    // [VideoManager.sharedManager startVideo];
+    [VideoManager.sharedManager startVideo];
 }
 
 /**
