@@ -7,12 +7,24 @@
 //
 
 #import "TouchManagerHandler.h"
+#import "ProxyManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+@interface TouchManagerHandler() <SDLTouchManagerDelegate>
+
+@end
 
 @implementation TouchManagerHandler
 
 #pragma mark - SDLTouchManagerDelegate
+
+- (instancetype)init {
+    if (self = [super init]) {
+        ProxyManager.sharedManager.sdlManager.streamManager.touchManager.touchEventDelegate = self;
+    }
+    return self;
+}
 
 /**
  *  Single tap was received.

@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-@interface TouchManagerHandler : NSObject <SDLTouchManagerDelegate>
+@interface TouchManagerHandler : NSObject
 
 /**
  *  Delegate that the touch manager will call.

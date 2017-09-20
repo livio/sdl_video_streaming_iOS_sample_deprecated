@@ -11,8 +11,8 @@
 #import "VideoManager.h"
 #import "TouchManagerHandler.h"
 
-NSString *const SDLAppName = @"SDLVideo";
-NSString *const SDLAppId = @"2776";
+NSString *const SDLAppName = @"Antelope";
+NSString *const SDLAppId = @"2626965156";
 NSString *const SDLIPAddress = @"192.168.1.236";
 UInt16 const SDLPort = (UInt16)2776;
 
@@ -40,18 +40,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) SDLHMIInitialShowState initialShowState;
 @property (nonatomic, nullable) id videoPeriodicTimer;
 
-// Screen touches
-@property (nonatomic, strong) SDLTouchManager *touchManager;
+// SDL Core HMI screen gesture recognition
+@property (nonatomic, strong) TouchManagerHandler *touchManagerHandler;
 
 @end
 
 
 @implementation ProxyManager
-
-#pragma mark - getters
-- (SDLTouchManager *)touchManager {
-    return self.sdlManager.streamManager.touchManager;
-}
 
 #pragma mark - Initialization
 
@@ -149,6 +144,7 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDLVideo" files:[NSSet setWithArray:@[@"ProxyManager"]]];
     logConfig.modules = [logConfig.modules setByAddingObject:sdlExampleModule];
     logConfig.targets = [logConfig.targets setByAddingObject:[SDLLogTargetFile logger]];
+    logConfig.globalLogLevel = SDLLogLevelVerbose;
 
     return logConfig;
 }
@@ -182,20 +178,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)hmiLevel:(SDLHMILevel)oldLevel didChangeToLevel:(SDLHMILevel)newLevel {
     if (![newLevel isEqualToEnum:SDLHMILevelNone] && (self.firstTimeState == SDLHMIFirstStateNone)) {
+        SDLLogD(@"first time in a non-NONE state");
         // This is our first time in a non-NONE state
         self.firstTimeState = SDLHMIFirstStateNonNone;
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdlex_stopStreamingVideo) name:UIApplicationWillResignActiveNotification object:nil];
     }
 
     if ([newLevel isEqualToEnum:SDLHMILevelFull] && (self.firstTimeState != SDLHMIFirstStateFull)) {
+        SDLLogD(@"first time in a FULL state");
         // This is our first time in a FULL state
         self.firstTimeState = SDLHMIFirstStateFull;
     }
 
     if ([newLevel isEqualToEnum:SDLHMILevelFull] || [newLevel isEqualToEnum:SDLHMILevelLimited]) {
+        SDLLogD(@"now in a FULL state, setting up video");
         [self sdlex_setupStreamingVideo];
     } else {
+        SDLLogD(@"now in a NONE state, stop getting video stream info");
         [self sdlex_stopStreamingVideo];
     }
 }
@@ -208,7 +206,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sdlex_setupStreamingVideo {
     if (self.videoPeriodicTimer != nil) { return; }
 
-    if (!self.sdlManager.streamManager.isVideoStreamingSupported) {
+    if (!self.sdlManager.streamManager.isStreamingSupported) {
         // Check if Core can support video
         self.videoPeriodicTimer = nil;
         return;
@@ -240,15 +238,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Registers for a callback from the video player on each new video frame. When the notification is received, an image is created from the current video frame and sent to the SDL Core.
  */
 - (void)sdlex_startStreamingVideo {
+    SDLLogD(@"Setting up sending video..");
     if (self.videoPeriodicTimer != nil) { return; }
 
-    // Screen is touch enabled
-    self.sdlManager.streamManager.touchManager.touchEventDelegate = self;
-//    self.sdlManager.streamManager.touchManager.touchEventHandler = ^(SDLTouch * _Nonnull touch, SDLTouchType  _Nonnull type) {
-//        NSLog(@"touched 😮");
-//    };
-
-    // self.touchHandler.delegate = self;
+    // Register for notifications about user touches on the SDL Core HMI
+    self.touchManagerHandler = [[TouchManagerHandler alloc] init];
 
     __weak typeof(self) weakSelf = self;
     self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
@@ -258,6 +252,8 @@ NS_ASSUME_NONNULL_BEGIN
             self.videoPeriodicTimer = nil;
             return;
         }
+
+        SDLLogD(@"Sending video buffer");
         // Grab an image of the current video frame and send it to SDL Core
         CVPixelBufferRef buffer = [VideoManager.sharedManager getPixelBuffer];
         [weakSelf sdlex_sendVideo:buffer];
@@ -269,6 +265,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Stops registering for a callback from the video player on each new video frame.
  */
 - (void)sdlex_stopStreamingVideo {
+    SDLLogD(@"stop streaming video");
     if (self.videoPeriodicTimer == nil) { return; }
     [VideoManager.sharedManager.player removeTimeObserver:self.videoPeriodicTimer];
     self.videoPeriodicTimer = nil;
@@ -286,7 +283,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     Boolean success = [self.sdlManager.streamManager sendVideoData:imageBuffer];
-    NSLog(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
+    SDLLogV(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
 }
 
 #pragma mark - Delegates
