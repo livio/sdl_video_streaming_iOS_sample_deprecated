@@ -175,8 +175,6 @@ NS_ASSUME_NONNULL_BEGIN
     if (![newLevel isEqualToEnum:SDLHMILevelNone] && (self.firstTimeState == SDLHMIFirstStateNone)) {
         // This is our first time in a non-NONE state
         self.firstTimeState = SDLHMIFirstStateNonNone;
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdlex_stopStreamingVideo) name:UIApplicationWillResignActiveNotification object:nil];
     }
 
     if ([newLevel isEqualToEnum:SDLHMILevelFull] && (self.firstTimeState != SDLHMIFirstStateFull)) {
