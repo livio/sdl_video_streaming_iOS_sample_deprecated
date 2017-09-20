@@ -197,7 +197,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sdlex_setupStreamingVideo {
     if (self.videoPeriodicTimer != nil) { return; }
 
-    if (!self.sdlManager.streamManager.isVideoStreamingSupported) {
+    if (!self.sdlManager.streamManager.streamingSupported) {
         // Check if Core can support video
         self.videoPeriodicTimer = nil;
         return;

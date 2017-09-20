@@ -6,7 +6,7 @@ target 'SDLStreamingVideoExample' do
   # use_frameworks!
 
   # Pods for SDLStreamingVideoExample
-  pod 'SmartDeviceLink', :git => 'https://github.com/smartdevicelink/sdl_ios', :branch => 'feature/streaming_media_manager'
+  pod 'SmartDeviceLink', :git => 'https://github.com/smartdevicelink/sdl_ios', :branch => 'feature/issue_686_video_capabilities_integration'
 
   target 'SDLStreamingVideoExampleTests' do
     inherit! :search_paths
