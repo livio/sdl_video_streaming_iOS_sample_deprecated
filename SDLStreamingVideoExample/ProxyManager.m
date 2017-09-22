@@ -10,10 +10,12 @@
 #import "ProxyManager.h"
 #import "VideoManager.h"
 
+@import ReplayKit;
+
 NSString *const SDLAppName = @"SDLVideo";
 NSString *const SDLAppId = @"2776";
 NSString *const SDLIPAddress = @"192.168.1.61";
-UInt16 const SDLPort = (UInt16)2776;
+UInt16 const SDLPort = (UInt16)12345;
 
 BOOL const ShouldRestartOnDisconnect = NO;
 
@@ -79,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLifecycleConfiguration *lifecycleConfig = [self.class sdlex_setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration defaultConfigurationWithAppName:SDLAppName appId:SDLAppId]];
 
     // Navigation apps must have a SDLStreamingMediaConfiguration
-    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
+    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration disabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
 
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
 
@@ -95,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLifecycleConfiguration *lifecycleConfig = [self.class sdlex_setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration debugConfigurationWithAppName:SDLAppName appId:SDLAppId ipAddress:SDLIPAddress port:SDLPort]];
 
     // Navigation apps must have a SDLStreamingMediaConfiguration
-    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
+    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration disabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
 
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
 
@@ -137,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (SDLLogConfiguration *)sdlex_logConfiguration {
     SDLLogConfiguration *logConfig = [SDLLogConfiguration debugConfiguration];
-    SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDLVideo" files:[NSSet setWithArray:@[@"ProxyManager"]]];
+    SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDLVideo" files:[NSSet setWithArray:@[@"ProxyManager", @"VideoManager"]]];
     logConfig.modules = [logConfig.modules setByAddingObject:sdlExampleModule];
     logConfig.targets = [logConfig.targets setByAddingObject:[SDLLogTargetFile logger]];
 
@@ -199,7 +201,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sdlex_setupStreamingVideo {
     if (self.videoPeriodicTimer != nil) { return; }
 
-    if (!self.sdlManager.streamManager.isVideoStreamingSupported) {
+    if (!self.sdlManager.streamManager.streamingSupported) {
         // Check if Core can support video
         self.videoPeriodicTimer = nil;
         return;
@@ -234,27 +236,48 @@ NS_ASSUME_NONNULL_BEGIN
     if (self.videoPeriodicTimer != nil) { return; }
     
     __weak typeof(self) weakSelf = self;
-    self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-        if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
-            // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
-            SDLLogW(@"Video streaming can not occur in background");
-            self.videoPeriodicTimer = nil;
-            return;
-        }
-        // Grab an image of the current video frame and send it to SDL Core
-        CVPixelBufferRef buffer = [VideoManager.sharedManager getPixelBuffer];
-        [weakSelf sdlex_sendVideo:buffer];
-        [VideoManager.sharedManager releasePixelBuffer:buffer];
-    }];
+//    self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+//        if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
+//            // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
+//            SDLLogW(@"Video streaming can not occur in background");
+//            self.videoPeriodicTimer = nil;
+//            return;
+//        }
+//        // Grab an image of the current video frame and send it to SDL Core
+//        CVPixelBufferRef buffer = [VideoManager.sharedManager getPixelBuffer];
+//        [weakSelf sdlex_sendVideo:buffer];
+//        [VideoManager.sharedManager releasePixelBuffer:buffer];
+//    }];
+
+    if (@available(iOS 11.0, *)) {
+        [RPScreenRecorder.sharedRecorder startCaptureWithHandler:^(CMSampleBufferRef  _Nonnull sampleBuffer, RPSampleBufferType bufferType, NSError * _Nullable error) {
+            SDLLogV(@"Capture Handler, buffer type: %li, error: %@, sample buffer: %@", (long)bufferType, error, sampleBuffer);
+            [weakSelf sdlex_sendVideo:CMSampleBufferGetImageBuffer(sampleBuffer)];
+        } completionHandler:^(NSError * _Nullable error) {
+            SDLLogE(@"Capture start completed, error: %@", error);
+        }];
+    } else {
+        // Fallback on earlier versions
+        NSAssert(NO, @"Needs 11");
+    }
 }
 
 /**
  *  Stops registering for a callback from the video player on each new video frame.
  */
 - (void)sdlex_stopStreamingVideo {
-    if (self.videoPeriodicTimer == nil) { return; }
-    [VideoManager.sharedManager.player removeTimeObserver:self.videoPeriodicTimer];
-    self.videoPeriodicTimer = nil;
+//    if (self.videoPeriodicTimer == nil) { return; }
+//    [VideoManager.sharedManager.player removeTimeObserver:self.videoPeriodicTimer];
+//    self.videoPeriodicTimer = nil;
+
+    if (@available(iOS 11.0, *)) {
+        [RPScreenRecorder.sharedRecorder stopCaptureWithHandler:^(NSError * _Nullable error) {
+            SDLLogE(@"Error stopping capture: %@", error);
+        }];
+    } else {
+        // Fallback on earlier versions
+        NSAssert(NO, @"Needs 11");
+    }
 }
 
 /**
@@ -268,8 +291,8 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
-    Boolean success = [self.sdlManager.streamManager sendVideoData:imageBuffer];
-    NSLog(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
+    BOOL success = [self.sdlManager.streamManager sendVideoData:imageBuffer];
+    SDLLogV(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
 }
 
 @end
