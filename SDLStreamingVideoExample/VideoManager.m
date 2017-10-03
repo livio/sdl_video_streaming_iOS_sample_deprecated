@@ -8,6 +8,7 @@
 
 #import "VideoManager.h"
 #import "ProxyManager.h"
+#import "SmartDeviceLink.h"
 
 @interface VideoManager ()
 
@@ -122,7 +123,7 @@ static NSString *kRateKey = @"rate";
  */
 - (AVPlayerItem *)createVideoPlayerItem:(AVPlayer *)player output:(AVPlayerItemOutput *)output {
     AVPlayerItem *playerItem = player.currentItem;
-    [playerItem addOutput:output];
+    // [playerItem addOutput:output];
 
     // Get notification when player item is ready
     [playerItem addObserver:self forKeyPath:kStatusKey options:NSKeyValueObservingOptionInitial context:&kStatusKey];
@@ -160,7 +161,7 @@ static NSString *kRateKey = @"rate";
  *  Creates an image from the current video frame and passes it to a CVPixelBufferRef
  */
 - (CVPixelBufferRef)getPixelBuffer {
-    CVPixelBufferRef buffer = NULL;
+    CVPixelBufferRef buffer = nil;
 
     if (self.playerItem != nil && self.playerOutput != nil && [self isReadyToPlay]) {
         CFTimeInterval t = CACurrentMediaTime();
@@ -195,6 +196,9 @@ static NSString *kRateKey = @"rate";
         __weak typeof(self) weakSelf = self;
         if (weakSelf.player.status == AVPlayerStatusReadyToPlay && weakSelf.playerItem.status == AVPlayerItemStatusReadyToPlay) {
             weakSelf.isReadyToPlay = true;
+            // Call addOutput:(AVPlayerItemOutput *)output only AFTER the status of the AVPlayerItem has changed to AVPlayerItemStatusReadyToPlay.
+            // https://stackoverflow.com/questions/24800742/iosavplayeritemvideooutput-hasnewpixelbufferforitemtime-doesnt-work-correctly
+            [self.playerItem addOutput:self.playerOutput];
         } else {
             weakSelf.isReadyToPlay = false;
         }

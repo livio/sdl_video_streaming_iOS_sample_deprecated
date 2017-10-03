@@ -238,23 +238,25 @@ NS_ASSUME_NONNULL_BEGIN
     
     __weak typeof(self) weakSelf = self;
     self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+        if (!self)
         if (!self.sdlManager.streamManager.isVideoConnected) {
-            SDLLogW(@"Video streaming is not connected...");
-//            self.videoPeriodicTimer = nil;
-//            SDLLogE(@"Video setup with SDL Core failed. Restart the app and reconnect the app to the SDL enable accessory");
-//            self.videoPeriodicTimer = nil;
-//            return;
+            SDLLogE(@"isVideoConnected is false");
         }
+
         if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
             // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
-            SDLLogW(@"Video streaming can not occur in background");
-            //            self.videoPeriodicTimer = nil;
+            SDLLogW(@"Video streaming can not occur in background.");
             return;
         }
 
-        SDLLogD(@"Video streaming...");
         // Grab an image of the current video frame and send it to SDL Core
         CVPixelBufferRef buffer = [VideoManager.sharedManager getPixelBuffer];
+
+        if (buffer == nil) {
+            SDLLogE(@"The image buffer is nil, returning.");
+            return;
+        }
+
         [weakSelf sdlex_sendVideo:buffer];
         [VideoManager.sharedManager releasePixelBuffer:buffer];
     }];
@@ -275,13 +277,15 @@ NS_ASSUME_NONNULL_BEGIN
  @param imageBuffer  The image(s) to send to SDL Core
  */
 - (void)sdlex_sendVideo:(CVPixelBufferRef)imageBuffer {
+
+
 //    if (imageBuffer == nil || [self.sdlManager.hmiLevel isEqualToEnum:SDLHMILevelNone] || [self.sdlManager.hmiLevel isEqualToEnum:SDLHMILevelBackground]) {
 //        // Video can only be sent when HMI level is full or limited
 //        return;
 //    }
 
     Boolean success = [self.sdlManager.streamManager sendVideoData:imageBuffer];
-    SDLLogD(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
+//    SDLLogD(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
 }
 
 @end
