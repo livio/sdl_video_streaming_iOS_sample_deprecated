@@ -140,14 +140,15 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDLVideo" files:[NSSet setWithArray:@[@"ProxyManager"]]];
     logConfig.modules = [logConfig.modules setByAddingObject:sdlExampleModule];
     logConfig.targets = [logConfig.targets setByAddingObject:[SDLLogTargetFile logger]];
+    logConfig.globalLogLevel = SDLLogLevelVerbose;
 
     return logConfig;
 }
 
 /**
- KVO for the proxy state. The proxy can change between being connected, stopped, and searching for connection.
-
- @param newState The new proxy state
+ *  KVO for the proxy state. The proxy can change between being connected, stopped, and searching for connection.
+ *
+ *  @param newState The new proxy state
  */
 - (void)sdlex_updateProxyState:(ProxyState)newState {
     if (self.state != newState) {
@@ -175,8 +176,6 @@ NS_ASSUME_NONNULL_BEGIN
     if (![newLevel isEqualToEnum:SDLHMILevelNone] && (self.firstTimeState == SDLHMIFirstStateNone)) {
         // This is our first time in a non-NONE state
         self.firstTimeState = SDLHMIFirstStateNonNone;
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdlex_stopStreamingVideo) name:UIApplicationWillResignActiveNotification object:nil];
     }
 
     if ([newLevel isEqualToEnum:SDLHMILevelFull] && (self.firstTimeState != SDLHMIFirstStateFull)) {
@@ -199,7 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sdlex_setupStreamingVideo {
     if (self.videoPeriodicTimer != nil) { return; }
 
-    if (!self.sdlManager.streamManager.streamingSupported) {
+    if (!self.sdlManager.streamManager.isStreamingSupported) {
         // Check if Core can support video
         self.videoPeriodicTimer = nil;
         return;
@@ -231,18 +230,27 @@ NS_ASSUME_NONNULL_BEGIN
  *  Registers for a callback from the video player on each new video frame. When the notification is received, an image is created from the current video frame and sent to the SDL Core.
  */
 - (void)sdlex_startStreamingVideo {
-    if (self.videoPeriodicTimer != nil) { return; }
+    if (self.videoPeriodicTimer != nil) {
+        SDLLogW(@"self.videoPeriodicTimer already setup");
+        return;
+    }
     
     __weak typeof(self) weakSelf = self;
     self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
             // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
-            SDLLogW(@"Video streaming can not occur in background");
-            self.videoPeriodicTimer = nil;
+            SDLLogW(@"Video streaming can not occur in background.");
             return;
         }
+
         // Grab an image of the current video frame and send it to SDL Core
         CVPixelBufferRef buffer = [VideoManager.sharedManager getPixelBuffer];
+
+        if (buffer == nil) {
+            SDLLogE(@"The image buffer is nil, returning.");
+            return;
+        }
+
         [weakSelf sdlex_sendVideo:buffer];
         [VideoManager.sharedManager releasePixelBuffer:buffer];
     }];
@@ -259,17 +267,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Send the video to SDL Core
-
- @param imageBuffer  The image(s) to send to SDL Core
+ *
+ *  @param imageBuffer  The image(s) to send to SDL Core
  */
 - (void)sdlex_sendVideo:(CVPixelBufferRef)imageBuffer {
-    if (imageBuffer == nil || [self.sdlManager.hmiLevel isEqualToEnum:SDLHMILevelNone] || [self.sdlManager.hmiLevel isEqualToEnum:SDLHMILevelBackground]) {
-        // Video can only be sent when HMI level is full or limited
-        return;
-    }
-
     Boolean success = [self.sdlManager.streamManager sendVideoData:imageBuffer];
-    NSLog(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
+    SDLLogD(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
 }
 
 @end

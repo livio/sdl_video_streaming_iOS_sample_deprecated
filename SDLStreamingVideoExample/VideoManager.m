@@ -8,6 +8,7 @@
 
 #import "VideoManager.h"
 #import "ProxyManager.h"
+#import "SmartDeviceLink.h"
 
 @interface VideoManager ()
 
@@ -48,8 +49,6 @@ static NSString *kRateKey = @"rate";
     _isReadyToPlay = false;
     _videoStreamingState = VideoStreamingStateNone;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-
     return self;
 }
 
@@ -66,17 +65,13 @@ static NSString *kRateKey = @"rate";
     [self.player removeObserver:self forKeyPath:kRateKey];
 }
 
-- (void)sdl_applicationDidBecomeActive:(NSNotification *)notification {
-    [self reset];
-}
-
 #pragma mark - Video player setup
 
 /**
  *  Returns a video player initalized with the provided video url.
-
- @param videoURL  The location of the video file
- @return  A video player view controller
+ *
+ *  @param videoURL  The location of the video file
+ *  @return  A video player view controller
  */
 - (AVPlayerViewController *)setupVideoPlayerWithURL:(NSURL *)videoURL {
     // https://forums.developer.apple.com/thread/27589
@@ -89,8 +84,8 @@ static NSString *kRateKey = @"rate";
 
 /**
  *  Returns an AVPlayerItemVideoOutput object that coordinates the output of content associated with a Core Video pixel buffer. Images can be grabbed from the video frames and added to a CVPixelBufferRef.
-
- @return  A coordinator for the output of content associated with a Core Video pixel buffer
+ *
+ *  @return  A coordinator for the output of content associated with a Core Video pixel buffer
  */
 - (AVPlayerItemVideoOutput *)createVideoPlayerOutput {
     NSDictionary *settings = @{
@@ -102,9 +97,9 @@ static NSString *kRateKey = @"rate";
 
 /**
  *  Returns an AVPlayer object that is responsible for managing the playback and timing of the video
-
- @param videoURL  The url of the video's location
- @return  A manager for the playback and timing of the video
+ *
+ *  @param videoURL  The url of the video's location
+ *  @return  A manager for the playback and timing of the video
  */
 - (AVPlayer *)createVideoPlayer:(NSURL *)videoURL {
     AVPlayer *player = [AVPlayer playerWithURL:videoURL];
@@ -122,13 +117,12 @@ static NSString *kRateKey = @"rate";
 /**
  *  Returns an AVPlayerItem object that provides the interface to seek to various times in the media, determines its presentation size, and many other things.
 
- @param player  A manager for the playback and timing of the video
- @param output  A coordinator for the output of content associated with a Core Video pixel buffer
- @return  An interface for the video
+ *  @param player  A manager for the playback and timing of the video
+ *  @param output  A coordinator for the output of content associated with a Core Video pixel buffer
+ *  @return  An interface for the video
  */
 - (AVPlayerItem *)createVideoPlayerItem:(AVPlayer *)player output:(AVPlayerItemOutput *)output {
     AVPlayerItem *playerItem = player.currentItem;
-    [playerItem addOutput:output];
 
     // Get notification when player item is ready
     [playerItem addObserver:self forKeyPath:kStatusKey options:NSKeyValueObservingOptionInitial context:&kStatusKey];
@@ -138,9 +132,9 @@ static NSString *kRateKey = @"rate";
 
 /**
  *  Returns a view controller for displaying the video with built in play/pause/skip controls
-
- @param player  Manages the playback and timing of the video
- @return  A view controller displaying the video content of the player along with system-supplied playback controls
+ *
+ *  @param player  Manages the playback and timing of the video
+ *  @return  A view controller displaying the video content of the player along with system-supplied playback controls
  */
 - (AVPlayerViewController *)createVideoViewControllerWithPlayer:(AVPlayer *)player {
     AVPlayerViewController *videoViewController = [[AVPlayerViewController alloc] init];
@@ -152,7 +146,7 @@ static NSString *kRateKey = @"rate";
 #pragma mark - Play video
 
 /**
- * Starts playing the video
+ *  Starts playing the video
  */
 - (void)startVideo {
     [self.player play];
@@ -166,7 +160,7 @@ static NSString *kRateKey = @"rate";
  *  Creates an image from the current video frame and passes it to a CVPixelBufferRef
  */
 - (CVPixelBufferRef)getPixelBuffer {
-    CVPixelBufferRef buffer = NULL;
+    CVPixelBufferRef buffer = nil;
 
     if (self.playerItem != nil && self.playerOutput != nil && [self isReadyToPlay]) {
         CFTimeInterval t = CACurrentMediaTime();
@@ -183,8 +177,8 @@ static NSString *kRateKey = @"rate";
 
 /**
  *  Releases data held in a CVPixelBufferRef. If the data is not released, the app will run out of memory and crash.
-
- @param buffer  A CVPixelBufferRef
+ *
+ *  @param buffer  A CVPixelBufferRef
  */
 - (void)releasePixelBuffer:(CVPixelBufferRef)buffer {
     CVPixelBufferUnlockBaseAddress(buffer, kCVPixelBufferLock_ReadOnly);
@@ -201,6 +195,9 @@ static NSString *kRateKey = @"rate";
         __weak typeof(self) weakSelf = self;
         if (weakSelf.player.status == AVPlayerStatusReadyToPlay && weakSelf.playerItem.status == AVPlayerItemStatusReadyToPlay) {
             weakSelf.isReadyToPlay = true;
+            // Call addOutput:(AVPlayerItemOutput *)output only AFTER the status of the AVPlayerItem has changed to AVPlayerItemStatusReadyToPlay.
+            // https://stackoverflow.com/questions/24800742/iosavplayeritemvideooutput-hasnewpixelbufferforitemtime-doesnt-work-correctly
+            [self.playerItem addOutput:self.playerOutput];
         } else {
             weakSelf.isReadyToPlay = false;
         }
