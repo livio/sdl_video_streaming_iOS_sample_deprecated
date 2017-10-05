@@ -146,9 +146,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 /**
- KVO for the proxy state. The proxy can change between being connected, stopped, and searching for connection.
-
- @param newState The new proxy state
+ *  KVO for the proxy state. The proxy can change between being connected, stopped, and searching for connection.
+ *
+ *  @param newState The new proxy state
  */
 - (void)sdlex_updateProxyState:(ProxyState)newState {
     if (self.state != newState) {
@@ -222,7 +222,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerForNotificationWhenVideoStartsPlaying {
     // Video is not yet playing. Register to get a notification when video starts playing
     VideoManager.sharedManager.videoStreamingStartedHandler = ^{
-        SDLLogD(@"got notification via the videoStreamingStartedHandler that video started playing");
         [self sdlex_startStreamingVideo];
     };
 }
@@ -238,11 +237,6 @@ NS_ASSUME_NONNULL_BEGIN
     
     __weak typeof(self) weakSelf = self;
     self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-        if (!self)
-        if (!self.sdlManager.streamManager.isVideoConnected) {
-            SDLLogE(@"isVideoConnected is false");
-        }
-
         if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
             // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
             SDLLogW(@"Video streaming can not occur in background.");
@@ -273,19 +267,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Send the video to SDL Core
-
- @param imageBuffer  The image(s) to send to SDL Core
+ *
+ *  @param imageBuffer  The image(s) to send to SDL Core
  */
 - (void)sdlex_sendVideo:(CVPixelBufferRef)imageBuffer {
-
-
-//    if (imageBuffer == nil || [self.sdlManager.hmiLevel isEqualToEnum:SDLHMILevelNone] || [self.sdlManager.hmiLevel isEqualToEnum:SDLHMILevelBackground]) {
-//        // Video can only be sent when HMI level is full or limited
-//        return;
-//    }
-
     Boolean success = [self.sdlManager.streamManager sendVideoData:imageBuffer];
-//    SDLLogD(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
+    SDLLogD(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
 }
 
 @end
