@@ -5,12 +5,12 @@
 1. The video will only start playing on the SDL Core HMI when the **play** button is selected on the device app. If desired, the video can be played right at startup in the `setupPlayer()` method of the `HomeViewController` class.
 
 # Changing the Video
-1. Drag the video into the project 
+1. Drag the video into the project. The example video is located in the **Video Assets** folder.
 1. The video must be added to **Bundle Resources**. Go to **Build Phases** -> **Copy Bundle Resources** and click on the plus sign icon. A dialog box will show up. Navigate to where the video is located and click on the video file.
-1. If video streaming is lagging, the video may be too large and may need to be compressed.
+1. If video streaming is lagging, the video may be too large and should be compressed.
 
 # Notes
-- This app is for testing porposes only.
+- This app is for testing purposes only.
 - Touch events are not used in this app.
 - This app streams a local video file. Setup will be different if streaming directly from the iOS device's camera (This is not handled in the example).
 - Video use in project is sourced from [https://videos.pexels.com](https://videos.pexels.com). The video is licensed under the [Creative Commons Zero (CC0) license](https://videos.pexels.com/video-license).
