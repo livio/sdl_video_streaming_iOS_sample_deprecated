@@ -22,3 +22,5 @@ xcuserdata/
 
 # Cocoapods
 Pods/
+
+.DS_Store
