@@ -8,12 +8,12 @@
 
 #import "SmartDeviceLink.h"
 #import "ProxyManager.h"
+#import "TouchManager.h"
 #import "VideoManager.h"
-#import "TouchManagerHandler.h"
 
 NSString *const SDLAppName = @"Antelope";
 NSString *const SDLAppId = @"2626965156";
-NSString *const SDLIPAddress = @"192.168.1.236";
+NSString *const SDLIPAddress = @"192.168.1.247";
 UInt16 const SDLPort = (UInt16)2776;
 
 BOOL const ShouldRestartOnDisconnect = NO;
@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable) id videoPeriodicTimer;
 
 // SDL Core HMI screen gesture recognition
-@property (nonatomic, strong) TouchManagerHandler *touchManagerHandler;
+@property (strong, nonatomic) TouchManager *touchManager;
 
 @end
 
@@ -144,7 +144,7 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDLVideo" files:[NSSet setWithArray:@[@"ProxyManager"]]];
     logConfig.modules = [logConfig.modules setByAddingObject:sdlExampleModule];
     logConfig.targets = [logConfig.targets setByAddingObject:[SDLLogTargetFile logger]];
-    logConfig.globalLogLevel = SDLLogLevelVerbose;
+    logConfig.globalLogLevel = SDLLogLevelDebug;
 
     return logConfig;
 }
@@ -242,21 +242,23 @@ NS_ASSUME_NONNULL_BEGIN
         SDLLogW(@"self.videoPeriodicTimer already setup");
         return;
     }
-    
+
+    _touchManager = [[TouchManager alloc] init];
+
     __weak typeof(self) weakSelf = self;
-    self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+    self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 60) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
             // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
             SDLLogW(@"Video streaming can not occur in background.");
             return;
         }
 
-        SDLLogD(@"Sending video buffer");
+        // SDLLogD(@"Sending video buffer");
         // Grab an image of the current video frame and send it to SDL Core
         CVPixelBufferRef buffer = [VideoManager.sharedManager getPixelBuffer];
 
         if (buffer == nil) {
-            SDLLogE(@"The image buffer is nil, returning.");
+            // SDLLogE(@"The image buffer is nil, returning.");
             return;
         }
 
@@ -285,73 +287,6 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLogV(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
 }
 
-#pragma mark - Delegates
-
-#pragma mark SDLTouchManagerDelegate
-/**
- *  Single tap was received.
- */
-- (void)touchManager:(SDLTouchManager *)manager didReceiveSingleTapAtPoint:(CGPoint)point {
-    NSLog(@"Single Tap: x: %f, y: %f", point.x, point.y);
-}
-
-/**
- *  Double tap was received.
- */
-- (void)touchManager:(SDLTouchManager *)manager didReceiveDoubleTapAtPoint:(CGPoint)point {
-    NSLog(@"Double Tap: x: %f, y: %f", point.x, point.y);
-}
-
-#pragma mark Panning
-
-/**
- *  Panning did start.
- */
-- (void)touchManager:(SDLTouchManager *)manager panningDidStartAtPoint:(CGPoint)point {
-    NSLog(@"Panning started: x: %f, y: %f", point.x, point.y);
-}
-
-/**
- *  Panning did move.
- */
-- (void)touchManager:(SDLTouchManager *)manager didReceivePanningFromPoint:(CGPoint)fromPoint toPoint:(CGPoint)toPoint {
-    NSLog(@"Panning From x: %f, y: %f, To x: %f, y: %f", fromPoint.x, fromPoint.y, toPoint.x, toPoint.y);
-}
-
-/**
- *  Panning did end.
- */
-- (void)touchManager:(SDLTouchManager *)manager panningDidEndAtPoint:(CGPoint)point {
-    NSLog(@"Panning ended: x: %f, y: %f", point.x, point.y);
-}
-
-#pragma mark Pinch
-
-/**
- *  Pinch did start.
- */
-- (void)touchManager:(SDLTouchManager *)manager pinchDidStartAtCenterPoint:(CGPoint)point {
-    NSLog(@"Pinch started: center x: %f, center y: %f", point.x, point.y);
-}
-
-/**
- *  Pinch did move.
- */
-- (void)touchManager:(SDLTouchManager *)manager didReceivePinchAtCenterPoint:(CGPoint)point withScale:(CGFloat)scale {
-    NSLog(@"Pinch moved: center x: %f, center y: %f, with scale: %f", point.x, point.y, scale);
-}
-
-/**
- *  Pinch did end.
- */
-- (void)touchManager:(SDLTouchManager *)manager pinchDidEndAtCenterPoint:(CGPoint)point {
-    NSLog(@"Pinch ended: center x: %f, center y: %f", point.x, point.y);
-}
-
-#pragma mark SDLTouchManagerHandler
-- (void)touchManagerHandlerShouldZoomIn:(TouchManagerHandler *)handler {
-    NSLog(@"Got something...");
-}
 
 @end
 

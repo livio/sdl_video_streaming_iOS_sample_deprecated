@@ -195,7 +195,7 @@ static NSString *kRateKey = @"rate";
         __weak typeof(self) weakSelf = self;
         if (weakSelf.player.status == AVPlayerStatusReadyToPlay && weakSelf.playerItem.status == AVPlayerItemStatusReadyToPlay) {
             weakSelf.isReadyToPlay = true;
-            // Call addOutput:(AVPlayerItemOutput *)output only AFTER the status of the AVPlayerItem has changed to AVPlayerItemStatusReadyToPlay.
+            // Call addOutput:(AVPlayerItemOutput *)output only AFTER the status of the AVPlayerItem has changed to AVPlayerItemStatusReadyToPlay.
             // https://stackoverflow.com/questions/24800742/iosavplayeritemvideooutput-hasnewpixelbufferforitemtime-doesnt-work-correctly
             [self.playerItem addOutput:self.playerOutput];
         } else {
