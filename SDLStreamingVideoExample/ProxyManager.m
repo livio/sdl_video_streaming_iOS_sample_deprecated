@@ -10,11 +10,13 @@
 #import "ProxyManager.h"
 #import "TouchManager.h"
 #import "VideoManager.h"
+#import "MenuManager.h"
 
 NSString *const SDLAppName = @"Antelope";
 NSString *const SDLAppId = @"2626965156";
-NSString *const SDLIPAddress = @"192.168.1.247";
-UInt16 const SDLPort = (UInt16)2776;
+NSString *const SDLIPAddress = @"192.168.64.2";
+// @"192.168.1.247";
+UInt16 const SDLPort = (UInt16)12345; //(UInt16)2776;
 
 BOOL const ShouldRestartOnDisconnect = NO;
 
@@ -181,6 +183,9 @@ NS_ASSUME_NONNULL_BEGIN
         SDLLogD(@"first time in a non-NONE state");
         // This is our first time in a non-NONE state
         self.firstTimeState = SDLHMIFirstStateNonNone;
+
+        // Create menu
+        [MenuManager sendMenuItemsWithManager:self.sdlManager];
     }
 
     if ([newLevel isEqualToEnum:SDLHMILevelFull] && (self.firstTimeState != SDLHMIFirstStateFull)) {
@@ -246,14 +251,13 @@ NS_ASSUME_NONNULL_BEGIN
     _touchManager = [[TouchManager alloc] init];
 
     __weak typeof(self) weakSelf = self;
-    self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 60) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+    self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 40) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
             // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
             SDLLogW(@"Video streaming can not occur in background.");
             return;
         }
 
-        // SDLLogD(@"Sending video buffer");
         // Grab an image of the current video frame and send it to SDL Core
         CVPixelBufferRef buffer = [VideoManager.sharedManager getPixelBuffer];
 
