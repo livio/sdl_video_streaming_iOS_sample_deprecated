@@ -10,7 +10,6 @@
 		5F72DBD70382C46DFA573735 /* libPods-SDLStreamingVideoExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D0043DA926C63D6292A3DCE /* libPods-SDLStreamingVideoExample.a */; };
 		880455521F8FF1AD00DE1E52 /* MenuManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 880455511F8FF1AD00DE1E52 /* MenuManager.m */; };
 		880455551F8FF8AA00DE1E52 /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 880455541F8FF8AA00DE1E52 /* ImageManager.m */; };
-		880455591F90007000DE1E52 /* HapticManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 880455581F90007000DE1E52 /* HapticManager.m */; };
 		88137A8D1F3E018D00342220 /* DrivingAtNight.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 88137A8C1F3E011700342220 /* DrivingAtNight.m4v */; };
 		884A32381F34F28E00E6A40B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A32371F34F28E00E6A40B /* main.m */; };
 		884A323B1F34F28E00E6A40B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A323A1F34F28E00E6A40B /* AppDelegate.m */; };
@@ -54,8 +53,6 @@
 		880455511F8FF1AD00DE1E52 /* MenuManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenuManager.m; sourceTree = "<group>"; };
 		880455531F8FF8AA00DE1E52 /* ImageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
 		880455541F8FF8AA00DE1E52 /* ImageManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
-		880455571F90007000DE1E52 /* HapticManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HapticManager.h; sourceTree = "<group>"; };
-		880455581F90007000DE1E52 /* HapticManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HapticManager.m; sourceTree = "<group>"; };
 		88137A8C1F3E011700342220 /* DrivingAtNight.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = DrivingAtNight.m4v; sourceTree = "<group>"; };
 		884A32331F34F28E00E6A40B /* SDLStreamingVideoExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDLStreamingVideoExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		884A32371F34F28E00E6A40B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -145,8 +142,6 @@
 				880455511F8FF1AD00DE1E52 /* MenuManager.m */,
 				8875095E1F8FAD51004CB608 /* TouchManager.h */,
 				8875095F1F8FAD51004CB608 /* TouchManager.m */,
-				880455571F90007000DE1E52 /* HapticManager.h */,
-				880455581F90007000DE1E52 /* HapticManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -561,7 +556,6 @@
 				884A326C1F34F2E100E6A40B /* HomeViewController.m in Sources */,
 				880455521F8FF1AD00DE1E52 /* MenuManager.m in Sources */,
 				885BCEE21F3B5CE800150136 /* VideoManager.m in Sources */,
-				880455591F90007000DE1E52 /* HapticManager.m in Sources */,
 				880455551F8FF8AA00DE1E52 /* ImageManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

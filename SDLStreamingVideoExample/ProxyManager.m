@@ -12,11 +12,14 @@
 #import "VideoManager.h"
 #import "MenuManager.h"
 
-NSString *const SDLAppName = @"Antelope";
-NSString *const SDLAppId = @"2626965156";
+NSString *const SDLAppName = @"A"; //@"Antelope";
+NSString *const SDLAppId = @"1234"; // @"2626965156";
 NSString *const SDLIPAddress = @"192.168.64.2";
-// @"192.168.1.247";
-UInt16 const SDLPort = (UInt16)12345; //(UInt16)2776;
+// 192.168.64.2;
+// 192.168.1.247;
+UInt16 const SDLPort = (UInt16)12345;
+// 12345;
+// 2776;
 
 BOOL const ShouldRestartOnDisconnect = NO;
 
@@ -85,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLifecycleConfiguration *lifecycleConfig = [self.class sdlex_setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration defaultConfigurationWithAppName:SDLAppName appId:SDLAppId]];
 
     // Navigation apps must have a SDLStreamingMediaConfiguration
-    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
+    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[self.class sdlex_streamingMediaConfiguration]];
 
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
 
@@ -93,6 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)startTCP {
+    SDLLogD(@"starting TCP...");
     [self sdlex_updateProxyState:ProxyStateSearchingForConnection];
     // Return if there is already an instance of sdlManager
     if (self.sdlManager) { return; }
@@ -101,8 +105,9 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLifecycleConfiguration *lifecycleConfig = [self.class sdlex_setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration debugConfigurationWithAppName:SDLAppName appId:SDLAppId ipAddress:SDLIPAddress port:SDLPort]];
 
     // Navigation apps must have a SDLStreamingMediaConfiguration
-    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
+    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[self.class sdlex_logConfiguration] streamingMedia:[self.class sdlex_streamingMediaConfiguration]];
 
+    SDLLogD(@"Proxy manager setting up streaming media config %@", config.streamingMediaConfig.window);
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
 
     [self startManager];
@@ -141,12 +146,23 @@ NS_ASSUME_NONNULL_BEGIN
     return config;
 }
 
++ (SDLStreamingMediaConfiguration *)sdlex_streamingMediaConfiguration {
+    SDLLogE(@"sdlex_streamingMediaConfiguration");
+
+    SDLStreamingMediaConfiguration *streamingMediaConfig = [SDLStreamingMediaConfiguration insecureConfiguration];
+    streamingMediaConfig.window = [UIApplication sharedApplication].windows.firstObject;
+
+    SDLLogD(@"window: %@", streamingMediaConfig.window);
+
+    return streamingMediaConfig;
+}
+
 + (SDLLogConfiguration *)sdlex_logConfiguration {
     SDLLogConfiguration *logConfig = [SDLLogConfiguration debugConfiguration];
-    SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDLVideo" files:[NSSet setWithArray:@[@"ProxyManager"]]];
+    SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDLStreamingVideoExample" files:[NSSet setWithArray:@[@"ProxyManager"]]];
     logConfig.modules = [logConfig.modules setByAddingObject:sdlExampleModule];
     logConfig.targets = [logConfig.targets setByAddingObject:[SDLLogTargetFile logger]];
-    logConfig.globalLogLevel = SDLLogLevelDebug;
+    logConfig.globalLogLevel = SDLLogLevelVerbose;
 
     return logConfig;
 }
@@ -288,7 +304,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)sdlex_sendVideo:(CVPixelBufferRef)imageBuffer {
     Boolean success = [self.sdlManager.streamManager sendVideoData:imageBuffer];
-    SDLLogV(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
+    // SDLLogV(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
 }
 
 
