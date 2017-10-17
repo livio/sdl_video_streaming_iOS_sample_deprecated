@@ -9,6 +9,7 @@
 #import "VideoManager.h"
 #import "ProxyManager.h"
 #import "SmartDeviceLink.h"
+#import "ImageManager.h"
 
 @interface VideoManager ()
 
@@ -172,6 +173,13 @@ static NSString *kRateKey = @"rate";
         }
     }
 
+    if (buffer == nil) {
+        return buffer;
+    }
+
+    // Draw star on buffer
+    buffer = [self drawRectangleOnPixelBuffer:buffer];
+
     return buffer;
 }
 
@@ -183,6 +191,55 @@ static NSString *kRateKey = @"rate";
 - (void)releasePixelBuffer:(CVPixelBufferRef)buffer {
     CVPixelBufferUnlockBaseAddress(buffer, kCVPixelBufferLock_ReadOnly);
     CVPixelBufferRelease(buffer);
+}
+
+#pragma mark - Drawing
+
+- (CVPixelBufferRef)drawStarOnPixelBuffer:(CVPixelBufferRef)pixelBuffer {
+    UIImage *star = [UIImage imageNamed:@"star_black_icon"];
+    CGFloat imageWidth = CGImageGetWidth(star.CGImage);
+    CGFloat imageHeight = CGImageGetHeight(star.CGImage);
+
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    void *data = CVPixelBufferGetBaseAddress(pixelBuffer);
+    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(data, imageWidth, imageHeight,
+                                                 8, CVPixelBufferGetBytesPerRow(pixelBuffer), rgbColorSpace,
+                                                 kCGBitmapByteOrder32Little |
+                                                 kCGImageAlphaPremultipliedFirst);
+    CGContextDrawImage(context, CGRectMake(0, 0, imageWidth,
+                                           imageHeight), star.CGImage);
+    CGColorSpaceRelease(rgbColorSpace);
+
+    CGContextRelease(context);
+
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+
+    return pixelBuffer;
+}
+
+- (CVPixelBufferRef)drawRectangleOnPixelBuffer:(CVPixelBufferRef)pixelBuffer {
+    UIImage *rectangle = [ImageManager rectangleWithColor:UIColor.redColor width:50.0 height:50.0];
+    CGFloat imageWidth = CGImageGetWidth(rectangle.CGImage);
+    CGFloat imageHeight = CGImageGetHeight(rectangle.CGImage);
+
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    void *data = CVPixelBufferGetBaseAddress(pixelBuffer);
+    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(data, imageWidth, imageHeight,
+                                                 8, CVPixelBufferGetBytesPerRow(pixelBuffer), rgbColorSpace,
+                                                 kCGImageAlphaNoneSkipFirst);
+
+    //  If the image is larger than the pixel buffer, this will crash
+    CGContextDrawImage(context, CGRectMake(0, 0, imageWidth,
+                                           imageHeight), rectangle.CGImage);
+    CGColorSpaceRelease(rgbColorSpace);
+
+    CGContextRelease(context);
+
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+
+    return pixelBuffer;
 }
 
 #pragma mark - Video player start KVO

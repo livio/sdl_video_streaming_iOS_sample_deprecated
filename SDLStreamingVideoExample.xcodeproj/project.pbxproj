@@ -22,6 +22,7 @@
 		884A32741F34F37000E6A40B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 884A32731F34F37000E6A40B /* Main.storyboard */; };
 		885BCEE21F3B5CE800150136 /* VideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 885BCEE11F3B5CE800150136 /* VideoManager.m */; };
 		887509601F8FAD51004CB608 /* TouchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8875095F1F8FAD51004CB608 /* TouchManager.m */; };
+		8883DBC31F965D0400F43979 /* VideoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8883DBC21F965D0400F43979 /* VideoButton.m */; };
 		8C217E285F30E25FE3A2CE05 /* libPods-SDLStreamingVideoExampleUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEAAF098906A25427A7D48A1 /* libPods-SDLStreamingVideoExampleUITests.a */; };
 		AF8CEBC6D74D609D7D155611 /* libPods-SDLStreamingVideoExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 67BE33EE6B2023C2330BBEA1 /* libPods-SDLStreamingVideoExampleTests.a */; };
 /* End PBXBuildFile section */
@@ -76,6 +77,8 @@
 		885BCEE11F3B5CE800150136 /* VideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoManager.m; sourceTree = "<group>"; };
 		8875095E1F8FAD51004CB608 /* TouchManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TouchManager.h; sourceTree = "<group>"; };
 		8875095F1F8FAD51004CB608 /* TouchManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TouchManager.m; sourceTree = "<group>"; };
+		8883DBC11F965D0400F43979 /* VideoButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoButton.h; sourceTree = "<group>"; };
+		8883DBC21F965D0400F43979 /* VideoButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoButton.m; sourceTree = "<group>"; };
 		9553AC0534580D5CCAD99E79 /* Pods-SDLStreamingVideoExampleUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExampleUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExampleUITests/Pods-SDLStreamingVideoExampleUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A39DD8D38E786A361CD065AE /* Pods-SDLStreamingVideoExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDLStreamingVideoExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SDLStreamingVideoExampleTests/Pods-SDLStreamingVideoExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		EEAAF098906A25427A7D48A1 /* libPods-SDLStreamingVideoExampleUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SDLStreamingVideoExampleUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -228,6 +231,7 @@
 				884A326E1F34F2F500E6A40B /* ProxyManager.h */,
 				884A326F1F34F2F500E6A40B /* ProxyManager.m */,
 				880455561F90005A00DE1E52 /* Managers */,
+				8883DBC41F965D0700F43979 /* Buttons */,
 			);
 			name = SDL;
 			sourceTree = "<group>";
@@ -238,6 +242,15 @@
 				884A32731F34F37000E6A40B /* Main.storyboard */,
 			);
 			name = UI;
+			sourceTree = "<group>";
+		};
+		8883DBC41F965D0700F43979 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				8883DBC11F965D0400F43979 /* VideoButton.h */,
+				8883DBC21F965D0400F43979 /* VideoButton.m */,
+			);
+			path = Buttons;
 			sourceTree = "<group>";
 		};
 		88CA380E1F34FF0D00AAE2B9 /* Video Assets */ = {
@@ -550,6 +563,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				884A323B1F34F28E00E6A40B /* AppDelegate.m in Sources */,
+				8883DBC31F965D0400F43979 /* VideoButton.m in Sources */,
 				887509601F8FAD51004CB608 /* TouchManager.m in Sources */,
 				884A32381F34F28E00E6A40B /* main.m in Sources */,
 				884A32701F34F2F500E6A40B /* ProxyManager.m in Sources */,

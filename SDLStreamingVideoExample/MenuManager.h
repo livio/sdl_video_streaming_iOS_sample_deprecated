@@ -12,5 +12,6 @@
 @interface MenuManager : NSObject
 
 + (void)sendMenuItemsWithManager:(SDLManager *)manager;
++ (void)sdlex_createAlertManeuverWithManager:(SDLManager *)manager;
 
 @end

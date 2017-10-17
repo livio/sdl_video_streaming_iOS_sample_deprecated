@@ -12,14 +12,32 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface TouchManager ()
+
+@property (strong, nonatomic) NSMutableArray<VideoButton *> * videoButtons;
+
+@end
+
 @implementation TouchManager
 
 - (instancetype)init {
     SDLLogV(@"Touch manager init");
     if (self = [super init]) {
         ProxyManager.sharedManager.sdlManager.streamManager.touchManager.touchEventDelegate = self;
+        // FIXME: - do lazy init
+        _videoButtons = [[NSMutableArray alloc] init];
     }
     return self;
+}
+
+#pragma mark - Buttons
+
+- (void)addVideoButton:(VideoButton *)videoButton {
+    [self.videoButtons addObject:videoButton];
+}
+
+- (void)removeVideoButton:(VideoButton *)videoButton {
+    // TODO: make dictionary
 }
 
 #pragma mark - Tap
@@ -29,6 +47,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)touchManager:(SDLTouchManager *)manager didReceiveSingleTapForView:(UIView *_Nullable)view atPoint:(CGPoint)point {
     SDLLogD(@"TOUCH MANAGER Single tap at point x: %f, y: %f", point.x, point.y);
+
+    for (VideoButton *button in self.videoButtons) {
+        if (CGRectContainsPoint(button.frame, point)) {
+            SDLLogD(@"Selected button named: %@", button.title);
+            button.buttonSelectedHandler();
+            break;
+        }
+    }
 }
 
 /**

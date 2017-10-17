@@ -75,6 +75,7 @@
 + (void)sdlex_createAlertManeuverWithManager:(SDLManager *)manager {
     SDLAlertManeuver *alertManeuver = [[SDLAlertManeuver alloc] init];
     alertManeuver.ttsChunks = [SDLTTSChunk textChunksFromString:@"Alert maneuver example"];
+    alertManeuver.softButtons = @[];
     [manager sendRequest:alertManeuver withResponseHandler:^(__kindof SDLRPCRequest * _Nullable request, __kindof SDLRPCResponse * _Nullable response, NSError * _Nullable error) {
         if ([response.resultCode isEqualToEnum:SDLResultSuccess]) { return; }
         SDLAlert* alert = [[SDLAlert alloc] init];

@@ -11,9 +11,10 @@
 #import "TouchManager.h"
 #import "VideoManager.h"
 #import "MenuManager.h"
+#import "VideoButton.h"
 
-NSString *const SDLAppName = @"A"; //@"Antelope";
-NSString *const SDLAppId = @"1234"; // @"2626965156";
+NSString *const SDLAppName = @"Antelope"; //"Antelope", "SDL Video"
+NSString *const SDLAppId = @"2626965156"; // "2626965156", "1234"
 NSString *const SDLIPAddress = @"192.168.64.2";
 // 192.168.64.2;
 // 192.168.1.247;
@@ -264,7 +265,12 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
-    _touchManager = [[TouchManager alloc] init];
+    self.touchManager = [[TouchManager alloc] init];
+    VideoButton *btn = [[VideoButton alloc] initWithTitle:@"A" frame:CGRectMake(20, 20, 50, 50) handler:^{
+        SDLLogE(@"video button was pressed!");
+        [MenuManager sdlex_createAlertManeuverWithManager:self.sdlManager];
+    }];
+    [self.touchManager addVideoButton:btn];
 
     __weak typeof(self) weakSelf = self;
     self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 40) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {

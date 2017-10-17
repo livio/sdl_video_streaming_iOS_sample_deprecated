@@ -31,4 +31,18 @@
     return [SDLArtwork artworkWithImage:[UIImage imageNamed:@"star_black_icon"] name:[self.class starImageName] asImageFormat:SDLArtworkImageFormatPNG];
 }
 
+#pragma mark - UIImage
++ (UIImage *)rectangleWithColor:(UIColor *)color width:(CGFloat)width height:(CGFloat)height {
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(width, height), NO, 0.0);
+
+    CGRect rectangle = CGRectMake(0, 0, width, height);
+    [color setFill];
+    UIRectFill(rectangle);
+
+    UIImage *rectangleImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return rectangleImage;
+}
+
 @end

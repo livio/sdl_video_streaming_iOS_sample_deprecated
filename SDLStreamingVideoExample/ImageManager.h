@@ -17,4 +17,6 @@
 
 + (NSString *)starImageName;
 
++ (UIImage *)rectangleWithColor:(UIColor *)color width:(CGFloat)width height:(CGFloat)height;
+
 @end
