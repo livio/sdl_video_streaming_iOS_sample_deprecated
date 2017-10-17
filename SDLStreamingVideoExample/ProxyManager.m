@@ -162,7 +162,7 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDLStreamingVideoExample" files:[NSSet setWithArray:@[@"ProxyManager"]]];
     logConfig.modules = [logConfig.modules setByAddingObject:sdlExampleModule];
     logConfig.targets = [logConfig.targets setByAddingObject:[SDLLogTargetFile logger]];
-    logConfig.globalLogLevel = SDLLogLevelVerbose;
+    logConfig.globalLogLevel = SDLLogLevelDebug; // SDLLogLevelVerbose;
 
     return logConfig;
 }
