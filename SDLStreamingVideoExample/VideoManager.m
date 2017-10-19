@@ -151,7 +151,11 @@ static NSString *kRateKey = @"rate";
  */
 - (void)startVideo {
     [self.player play];
-    if (self.videoStreamingStartedHandler == nil) { return; }
+    if (self.videoStreamingStartedHandler == nil) {
+        SDLLogE(@"Video started playing... Nothing to notify, returning");
+        return;
+    }
+    SDLLogD(@"Video started playing... notifying");
     self.videoStreamingStartedHandler();
 }
 
@@ -178,7 +182,7 @@ static NSString *kRateKey = @"rate";
     }
 
     // Draw star on buffer
-    buffer = [self drawRectangleOnPixelBuffer:buffer];
+    // buffer = [self drawRectangleOnPixelBuffer:buffer];
 
     return buffer;
 }

@@ -7,22 +7,22 @@ PODS:
     - BiSON (~> 1.0)
 
 DEPENDENCIES:
-  - SmartDeviceLink (from `https://github.com/smartdevicelink/sdl_ios`, branch `bugfix/issue_740_Accessory_connection_fails_in_background`)
+  - SmartDeviceLink (from `https://github.com/smartdevicelink/sdl_ios`, branch `release/5.0.0`)
 
 EXTERNAL SOURCES:
   SmartDeviceLink:
-    :branch: bugfix/issue_740_Accessory_connection_fails_in_background
+    :branch: release/5.0.0
     :git: https://github.com/smartdevicelink/sdl_ios
 
 CHECKOUT OPTIONS:
   SmartDeviceLink:
-    :commit: c938af96a6920d7e6e3b0330f8614489287dfa18
+    :commit: 33b596fec70b3f1152cc84cf9aeafbfeca0b046e
     :git: https://github.com/smartdevicelink/sdl_ios
 
 SPEC CHECKSUMS:
   BiSON: 4a12ea7d55a080bb374b307692f5a4dca440b2fc
   SmartDeviceLink: 671753224d011311efff44b7113fd9f34650fc1e
 
-PODFILE CHECKSUM: 1ce22e52d9625a6c1e2567d6f99d9e7bc2167676
+PODFILE CHECKSUM: 01b9c4ea9bd93b511435dd5237629b805ac5420b
 
 COCOAPODS: 1.3.1

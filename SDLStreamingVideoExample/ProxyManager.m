@@ -93,6 +93,8 @@ NS_ASSUME_NONNULL_BEGIN
 
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
 
+    [self sdlex_setupStreamingVideo];
+
     [self startManager];
 }
 
@@ -110,6 +112,8 @@ NS_ASSUME_NONNULL_BEGIN
 
     SDLLogD(@"Proxy manager setting up streaming media config %@", config.streamingMediaConfig.window);
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
+
+    [self sdlex_setupStreamingVideo];
 
     [self startManager];
 }
@@ -163,7 +167,7 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDLStreamingVideoExample" files:[NSSet setWithArray:@[@"ProxyManager"]]];
     logConfig.modules = [logConfig.modules setByAddingObject:sdlExampleModule];
     logConfig.targets = [logConfig.targets setByAddingObject:[SDLLogTargetFile logger]];
-    logConfig.globalLogLevel = SDLLogLevelDebug; // SDLLogLevelVerbose;
+    logConfig.globalLogLevel = SDLLogLevelVerbose; // SDLLogLevelVerbose;
 
     return logConfig;
 }
@@ -196,28 +200,31 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)hmiLevel:(SDLHMILevel)oldLevel didChangeToLevel:(SDLHMILevel)newLevel {
-    if (![newLevel isEqualToEnum:SDLHMILevelNone] && (self.firstTimeState == SDLHMIFirstStateNone)) {
-        SDLLogD(@"first time in a non-NONE state");
-        // This is our first time in a non-NONE state
-        self.firstTimeState = SDLHMIFirstStateNonNone;
-
-        // Create menu
-        [MenuManager sendMenuItemsWithManager:self.sdlManager];
-    }
-
-    if ([newLevel isEqualToEnum:SDLHMILevelFull] && (self.firstTimeState != SDLHMIFirstStateFull)) {
-        SDLLogD(@"first time in a FULL state");
-        // This is our first time in a FULL state
-        self.firstTimeState = SDLHMIFirstStateFull;
-    }
-
-    if ([newLevel isEqualToEnum:SDLHMILevelFull] || [newLevel isEqualToEnum:SDLHMILevelLimited]) {
-        SDLLogD(@"now in a FULL state, setting up video");
-        [self sdlex_setupStreamingVideo];
-    } else {
-        SDLLogD(@"now in a NONE state, stop getting video stream info");
-        [self sdlex_stopStreamingVideo];
-    }
+//    [self sdlex_setupStreamingVideo];
+//
+//    if (![newLevel isEqualToEnum:SDLHMILevelNone] && (self.firstTimeState == SDLHMIFirstStateNone)) {
+//        SDLLogD(@"first time in a non-NONE state");
+//        // This is our first time in a non-NONE state
+//        self.firstTimeState = SDLHMIFirstStateNonNone;
+//
+//        // Create menu
+//        [MenuManager sendMenuItemsWithManager:self.sdlManager];
+//    }
+//
+//    if ([newLevel isEqualToEnum:SDLHMILevelFull] && (self.firstTimeState != SDLHMIFirstStateFull)) {
+//        SDLLogD(@"first time in a FULL state");
+//        // This is our first time in a FULL state
+//        self.firstTimeState = SDLHMIFirstStateFull;
+//    }
+//
+//    if ([newLevel isEqualToEnum:SDLHMILevelFull] || [newLevel isEqualToEnum:SDLHMILevelLimited]) {
+//        SDLLogD(@"now in a FULL state");
+////        [self sdlex_setupStreamingVideo];
+//    } else {
+//        SDLLogD(@"now in a NONE state");
+//        // Sometimes HMI state goes from (null to NONE) and then never changes to FULL, so just don't stop anything
+//        // [self sdlex_stopStreamingVideo];
+//    }
 }
 
 #pragma mark - Streaming Video
@@ -227,31 +234,41 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)sdlex_setupStreamingVideo {
     if (self.videoPeriodicTimer != nil) { return; }
+    [self registerForNotificationWhenVideoStartsPlaying];
 
-    if (!self.sdlManager.streamManager.isStreamingSupported) {
-        // Check if Core can support video
-        self.videoPeriodicTimer = nil;
-        return;
-    }
-
-    if (VideoManager.sharedManager.player == nil) {
-        // Video player is not yet setup
-        [self registerForNotificationWhenVideoStartsPlaying];
-    } else if (VideoManager.sharedManager.player.rate == 1.0) {
-        // Video is already playing, setup the buffer to send video to SDL Core
-        [self sdlex_startStreamingVideo];
-    } else {
-        // Video player is setup but nothing is playing yet
-        [self registerForNotificationWhenVideoStartsPlaying];
-    }
+//    if (!self.sdlManager.streamManager.isStreamingSupported) {
+//        // Check if Core can support video
+//        self.videoPeriodicTimer = nil;
+//        return;
+//    }
+//
+//    if (VideoManager.sharedManager.player == nil) {
+//        // Video player is not yet setup
+//        SDLLogD(@"Video player is not yet setup");
+//    } else if (VideoManager.sharedManager.player.rate == 1.0) {
+//        // Video is already playing, setup the buffer to send video to SDL Core
+//        SDLLogD(@"Video is already playing, setup the buffer to send video to SDL Core");
+//        [self sdlex_startStreamingVideo];
+//    } else {
+//        // Video player is setup but nothing is playing yet
+//        SDLLogD(@"Video player is setup but nothing is playing yet");
+//        [self registerForNotificationWhenVideoStartsPlaying];
+//    }
 }
 
 /**
  *  Registers for a callback when the video player starts playing
  */
 - (void)registerForNotificationWhenVideoStartsPlaying {
+    if (VideoManager.sharedManager.videoStreamingStartedHandler != nil) {
+        SDLLogE(@"Handler already created, returning");
+        return;
+    }
+
     // Video is not yet playing. Register to get a notification when video starts playing
+    SDLLogD(@"registering to get notification when video starts playing");
     VideoManager.sharedManager.videoStreamingStartedHandler = ^{
+        SDLLogD(@"Video has started playing");
         [self sdlex_startStreamingVideo];
     };
 }
@@ -260,6 +277,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  Registers for a callback from the video player on each new video frame. When the notification is received, an image is created from the current video frame and sent to the SDL Core.
  */
 - (void)sdlex_startStreamingVideo {
+    SDLLogD(@"Proxy Manager - video is streaming, send it to Core.");
+
     if (self.videoPeriodicTimer != nil) {
         SDLLogW(@"self.videoPeriodicTimer already setup");
         return;
@@ -273,7 +292,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.touchManager addVideoButton:btn];
 
     __weak typeof(self) weakSelf = self;
-    self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 40) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+    self.videoPeriodicTimer = [VideoManager.sharedManager.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive) {
             // Due to an iOS limitation of VideoToolbox's encoder and openGL, video streaming can not happen in the background
             SDLLogW(@"Video streaming can not occur in background.");
@@ -284,7 +303,7 @@ NS_ASSUME_NONNULL_BEGIN
         CVPixelBufferRef buffer = [VideoManager.sharedManager getPixelBuffer];
 
         if (buffer == nil) {
-            // SDLLogE(@"The image buffer is nil, returning.");
+            SDLLogE(@"The image buffer is nil, returning.");
             return;
         }
 
@@ -310,7 +329,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)sdlex_sendVideo:(CVPixelBufferRef)imageBuffer {
     Boolean success = [self.sdlManager.streamManager sendVideoData:imageBuffer];
-    // SDLLogV(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
+    SDLLogV(@"Video was sent %@", success ? @"successfully" : @"unsuccessfully");
 }
 
 
