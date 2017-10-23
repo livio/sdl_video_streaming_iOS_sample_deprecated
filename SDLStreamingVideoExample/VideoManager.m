@@ -150,7 +150,12 @@ static NSString *kRateKey = @"rate";
  */
 - (void)startVideo {
     [self.player play];
-    if (self.videoStreamingStartedHandler == nil) { return; }
+    if (self.videoStreamingStartedHandler == nil) {
+        SDLLogE(@"Video started playing...but no delegates to notify, returning");
+        return;
+    }
+
+    SDLLogD(@"Video started playing...notifying delegates");
     self.videoStreamingStartedHandler();
 }
 

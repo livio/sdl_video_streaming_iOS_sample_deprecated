@@ -83,6 +83,8 @@ NS_ASSUME_NONNULL_BEGIN
 
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
 
+    [self sdlex_setupStreamingVideo];
+
     [self startManager];
 }
 
@@ -98,6 +100,8 @@ NS_ASSUME_NONNULL_BEGIN
     SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration] logging:[[self class] sdlex_logConfiguration] streamingMedia:[SDLStreamingMediaConfiguration insecureConfiguration]];
 
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
+
+    [self sdlex_setupStreamingVideo];
 
     [self startManager];
 }
@@ -184,9 +188,9 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     if ([newLevel isEqualToEnum:SDLHMILevelFull] || [newLevel isEqualToEnum:SDLHMILevelLimited]) {
-        [self sdlex_setupStreamingVideo];
+        // State is full or limited
     } else {
-        [self sdlex_stopStreamingVideo];
+        // State is background or none
     }
 }
 
@@ -197,31 +201,23 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)sdlex_setupStreamingVideo {
     if (self.videoPeriodicTimer != nil) { return; }
-
-    if (!self.sdlManager.streamManager.isStreamingSupported) {
-        // Check if Core can support video
-        self.videoPeriodicTimer = nil;
-        return;
-    }
-
-    if (VideoManager.sharedManager.player == nil) {
-        // Video player is not yet setup
-        [self registerForNotificationWhenVideoStartsPlaying];
-    } else if (VideoManager.sharedManager.player.rate == 1.0) {
-        // Video is already playing, setup the buffer to send video to SDL Core
-        [self sdlex_startStreamingVideo];
-    } else {
-        // Video player is setup but nothing is playing yet
-        [self registerForNotificationWhenVideoStartsPlaying];
-    }
+    [self registerForNotificationWhenVideoStartsPlaying];
 }
 
 /**
  *  Registers for a callback when the video player starts playing
  */
 - (void)registerForNotificationWhenVideoStartsPlaying {
+    if (VideoManager.sharedManager.videoStreamingStartedHandler != nil) {
+        SDLLogE(@"Handler already created, returning");
+        return;
+    }
+
+    SDLLogD(@"registering to get notification when video starts playing");
+
     // Video is not yet playing. Register to get a notification when video starts playing
     VideoManager.sharedManager.videoStreamingStartedHandler = ^{
+        SDLLogD(@"Video has started playing");
         [self sdlex_startStreamingVideo];
     };
 }
